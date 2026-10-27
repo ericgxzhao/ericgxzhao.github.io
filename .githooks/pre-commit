@@ -1,0 +1,31 @@
+#!/bin/sh
+# Blocks a commit when a staged page with code cells has out-of-date results in _freeze/.
+# The GitHub build reuses _freeze/ instead of running code, so stale results would fail the deploy.
+# Quarto marks results stale when any part of the page changes, prose included.
+# Enable once per clone:  git config core.hooksPath .githooks
+
+if command -v md5sum >/dev/null 2>&1; then
+  hash_stdin() { md5sum | cut -d' ' -f1; }
+else
+  hash_stdin() { md5 -q; }
+fi
+
+stale=$(git diff --cached --name-only --diff-filter=ACMR -- '*.qmd' '*.md' | while IFS= read -r f; do
+  git show ":$f" | grep -qE '^```\{(python|r|julia)' || continue
+  saved=$(git show ":_freeze/${f%.*}/execute-results/html.json" 2>/dev/null |
+    sed -n 's/.*"hash": *"\([0-9a-f]*\)".*/\1/p' | head -n 1)
+  current=$(git show ":$f" | tr -d '\r' | hash_stdin)
+  [ "$saved" = "$current" ] || echo "$f"
+done)
+
+[ -z "$stale" ] && exit 0
+
+{
+  echo "Commit blocked: saved code results in _freeze/ are out of date for:"
+  echo "$stale" | sed 's/^/  /'
+  echo
+  echo "Render, stage the new results, and commit again:"
+  echo "$stale" | sed 's/^/  quarto render /'
+  echo "  git add _freeze"
+} >&2
+exit 1
