@@ -1,0 +1,272 @@
+/* ── Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+
+/* ── Custom parchment theme ── */
+
+/* Page background */
+body {
+  background-color: #f5edd8;
+  color: #2c2416;
+}
+
+/* Navbar */
+.navbar {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url("files/pngtree-background-showcasing-intricate-carbon-fiber-weave-texture-picture-image_15215804.jpg") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid #111;
+}
+
+.navbar-brand,
+.navbar-nav .nav-link {
+  color: #e0e0e0 !important;
+  font-family: 'Titillium Web', sans-serif !important;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #ffffff !important;
+}
+
+/* Sidebar / TOC */
+#quarto-sidebar,
+#TOC {
+  background-color: #f0e4c8;
+}
+
+#TOC a,
+.sidebar-navigation a {
+  color: #5c4a2a;
+}
+
+#TOC a:hover,
+.sidebar-navigation a:hover {
+  color: #2c2416;
+}
+
+/* Main content area */
+#quarto-content,
+.quarto-container {
+  background-color: #f5edd8;
+}
+
+/* Links */
+a {
+  color: #4a6e8a;
+}
+
+a:hover {
+  color: #2e5068;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: #1e1408;
+}
+
+/* Horizontal rules */
+hr {
+  border-color: #c8b89a;
+}
+
+/* Code blocks — dark Dracula theme */
+pre, pre.sourceCode,
+.sourceCode,
+div.sourceCode {
+  background-color: #282a36 !important;
+  border: 1px solid #44475a !important;
+  border-radius: 6px;
+  color: #f8f8f2 !important;
+}
+
+/* Code fold toggle */
+details.code-fold > summary,
+.quarto-code-fold-toggle {
+  background-color: #3a3c4a !important;
+  color: #b0b4c8 !important;
+  border-color: #44475a !important;
+  border-radius: 6px !important;
+  font-size: 0.78rem !important;
+  padding: 3px 10px !important;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+details.code-fold > summary:hover,
+.quarto-code-fold-toggle:hover {
+  opacity: 1;
+}
+
+code {
+  background-color: #282a36;
+  color: #f8f8f2;
+  border-radius: 3px;
+  padding: 0.1em 0.3em;
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+/* Cards and panels */
+.card {
+  background-color: #ede0c3;
+  border-color: #c8b89a;
+}
+
+.card-header {
+  background-color: #e8d8b8;
+  border-bottom-color: #c8b89a;
+}
+
+/* Tables */
+.table {
+  color: #2c2416;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(0, 0, 0, 0.03);
+  color: #2c2416;
+}
+
+.table > :not(caption) > * > * {
+  border-bottom-color: #c8b89a;
+}
+
+/* Callouts */
+.callout {
+  background-color: #ede0c3;
+  border-left-color: #4a6e8a;
+}
+
+/* Footer */
+#quarto-footer,
+.nav-footer {
+  background-color: #e8d8b8;
+  border-top: 1px solid #c8b89a;
+  color: #7a6a50;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid #8a6e4a;
+  color: #5c4a2a;
+  background-color: #ede0c3;
+  padding: 0.5em 1em;
+  border-radius: 0 4px 4px 0;
+}
+
+/* About page font */
+.about-contents,
+.about-entity {
+  font-family: 'Source Serif 4', serif;
+  font-weight: 400;
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+
+/* About page meta text (dates, locations) */
+.meta {
+  color: #7a5c3a;
+  font-size: 0.88em;
+}
+
+/* About page link buttons */
+.about-link {
+  color: #2c2416 !important;
+  border-color: #8a7a60 !important;
+  background-color: transparent !important;
+}
+
+.about-link:hover {
+  color: #1e1408 !important;
+  border-color: #2c2416 !important;
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+.about-link-text {
+  color: #2c2416 !important;
+}
+
+/* Blog listing */
+.listing-date,
+.listing-author {
+  color: #7a6a50 !important;
+}
+
+.listing-title,
+.listing-title a {
+  color: #1e1408 !important;
+}
+
+.listing-description,
+.listing-description a,
+.delink.listing-description {
+  color: #3a2e1e !important;
+}
+
+.listing-subtitle,
+.quarto-post .listing-subtitle,
+.listing-subtitle a,
+.quarto-post .listing-subtitle a {
+  color: #5c4a2a !important;
+  opacity: 1 !important;
+}
+
+.listing-category {
+  color: #4a3a24 !important;
+  border-color: #8a7a60 !important;
+  background-color: transparent !important;
+}
+
+/* Selection highlight */
+::selection {
+  background-color: #8a6e4a;
+  color: #fff;
+}
+
+/* ── Panel tabset tabs — parchment theme ── */
+.panel-tabset .nav-tabs {
+  border-bottom: 2px solid #c8b89a;
+  gap: 2px;
+}
+
+.panel-tabset .nav-tabs .nav-link {
+  color: #5c4a2a;
+  background-color: rgba(0, 0, 0, 0.04);
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  margin-bottom: -2px;
+  padding: 0.45rem 1.1rem;
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.panel-tabset .nav-tabs .nav-link:hover:not(.active) {
+  color: #2c2416;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-color: #c8b89a #c8b89a transparent;
+}
+
+.panel-tabset .nav-tabs .nav-link.active {
+  color: #1e1408;
+  font-weight: 600;
+  background-color: #f5edd8;         /* matches page background */
+  border-color: #c8b89a #c8b89a #f5edd8; /* bottom merges with page */
+}
+
+.panel-tabset .tab-content {
+  border: 1px solid #c8b89a;
+  border-top: none;                  /* nav-tabs bottom border covers this */
+  border-radius: 0 6px 6px 6px;     /* square top-left (under active tab), round elsewhere */
+  padding: 0.75rem 0.6rem 0.5rem;
+  overflow-x: hidden;                /* prevent horizontal scrollbar */
+}

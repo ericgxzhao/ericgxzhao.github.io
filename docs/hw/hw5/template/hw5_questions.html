@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.13">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Eric Zhao">
+<meta name="dcterms.date" content="2026-06-14">
+
+<title>Key Drivers Analysis – Eric Zhao</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-28756a26ae97ef16d13ddebe2ffefc5c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-0a1b285f7531e058031a821c381133c7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">Eric Zhao</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../resume.html"> 
+<span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../blog/index.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The Data</a></li>
+  <li><a href="#the-six-importance-measures" id="toc-the-six-importance-measures" class="nav-link" data-scroll-target="#the-six-importance-measures">The Six Importance Measures</a>
+  <ul class="collapse">
+  <li><a href="#pearson-correlations" id="toc-pearson-correlations" class="nav-link" data-scroll-target="#pearson-correlations">1. Pearson correlations</a></li>
+  <li><a href="#standardized-regression-coefficients" id="toc-standardized-regression-coefficients" class="nav-link" data-scroll-target="#standardized-regression-coefficients">2. Standardized regression coefficients</a></li>
+  <li><a href="#drop-one-usefulness" id="toc-drop-one-usefulness" class="nav-link" data-scroll-target="#drop-one-usefulness">3. Drop-one usefulness</a></li>
+  <li><a href="#shapley-values-lmg-built-from-scratch" id="toc-shapley-values-lmg-built-from-scratch" class="nav-link" data-scroll-target="#shapley-values-lmg-built-from-scratch">4. Shapley values (LMG) — built from scratch</a></li>
+  <li><a href="#johnsons-relative-weights" id="toc-johnsons-relative-weights" class="nav-link" data-scroll-target="#johnsons-relative-weights">5. Johnson’s relative weights</a></li>
+  <li><a href="#random-forest-gini-importance" id="toc-random-forest-gini-importance" class="nav-link" data-scroll-target="#random-forest-gini-importance">6. Random forest Gini importance</a></li>
+  </ul></li>
+  <li><a href="#the-replicated-table" id="toc-the-replicated-table" class="nav-link" data-scroll-target="#the-replicated-table">The Replicated Table</a></li>
+  <li><a href="#reading-the-results" id="toc-reading-the-results" class="nav-link" data-scroll-target="#reading-the-results">Reading the Results</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Key Drivers Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Eric Zhao </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">June 14, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>A <strong>key drivers analysis</strong> answers a deceptively simple business question: <em>of all the things customers say about our product, which perceptions matter most for overall satisfaction?</em> Marketing teams use the answer to decide where to invest — is it more valuable to make the product <em>easier to use</em>, or to deepen the sense that it <em>makes a difference in my life</em>?</p>
+<p>The trouble is that “matters most” has no single definition. The predictors are correlated with each other, so the importance you attribute to any one of them depends on how you account for the variance it shares with the others. Different defensible methods give different answers. The standard practice — popularized in the <em>key drivers</em> slides this assignment replicates — is therefore to compute <strong>several</strong> importance measures and read them together, looking for variables that rank high across the board.</p>
+<p>This post replicates slide 75 of the key drivers deck using a customer-satisfaction survey. For each of nine brand perceptions I compute six importance measures:</p>
+<ol type="1">
+<li><strong>Pearson correlations</strong> — raw bivariate association</li>
+<li><strong>Standardized regression coefficients</strong> — partial effect, holding others constant</li>
+<li><strong>Drop-one (“usefulness”)</strong> — the unique variance a predictor adds last</li>
+<li><strong>Shapley values (LMG)</strong> — average marginal contribution over all variable orderings</li>
+<li><strong>Johnson’s relative weights (epsilon)</strong> — a fast approximation of Shapley</li>
+<li><strong>Mean decrease in Gini from a random forest</strong> — a nonlinear, tree-based importance</li>
+</ol>
+<p>As a <em>medium challenge</em>, the Shapley values are computed from scratch — averaging the incremental <span class="math inline">\(R^2\)</span> a predictor contributes across every possible ordering of the predictors — rather than calling a packaged routine.</p>
+</section>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The Data</h2>
+<p>The survey contains 2,553 respondents. Each rated their overall <code>satisfaction</code> (1–5) and answered nine yes/no perception questions about the brand.</p>
+<div id="576ae8ae" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> factorial</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestRegressor</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"../data/data_for_drivers_analysis.csv"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">"satisfaction"</span>].values</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>predictors <span class="op">=</span> [<span class="st">"trust"</span>, <span class="st">"build"</span>, <span class="st">"differs"</span>, <span class="st">"easy"</span>, <span class="st">"appealing"</span>,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>              <span class="st">"rewarding"</span>, <span class="st">"popular"</span>, <span class="st">"service"</span>, <span class="st">"impact"</span>]</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> {</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"trust"</span>:     <span class="st">"Is offered by a brand I trust"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"build"</span>:     <span class="st">"Helps build credit quickly"</span>,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"differs"</span>:   <span class="st">"Is different from other cards"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"easy"</span>:      <span class="st">"Is easy to use"</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"appealing"</span>: <span class="st">"Has appealing benefits or rewards"</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rewarding"</span>: <span class="st">"Rewards me for responsible usage"</span>,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"popular"</span>:   <span class="st">"Is used by a lot of people"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"service"</span>:   <span class="st">"Provides outstanding customer service"</span>,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"impact"</span>:    <span class="st">"Makes a difference in my life"</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df[predictors].values</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>n, p <span class="op">=</span> X.shape</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">brand</th>
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th">satisfaction</th>
+<th data-quarto-table-cell-role="th">trust</th>
+<th data-quarto-table-cell-role="th">build</th>
+<th data-quarto-table-cell-role="th">differs</th>
+<th data-quarto-table-cell-role="th">easy</th>
+<th data-quarto-table-cell-role="th">appealing</th>
+<th data-quarto-table-cell-role="th">rewarding</th>
+<th data-quarto-table-cell-role="th">popular</th>
+<th data-quarto-table-cell-role="th">service</th>
+<th data-quarto-table-cell-role="th">impact</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>1</td>
+<td>98</td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>1</td>
+<td>179</td>
+<td>5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>1</td>
+<td>197</td>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>1</td>
+<td>317</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>1</td>
+<td>356</td>
+<td>4</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Each perception is a binary indicator (1 = the respondent agrees the card has that quality). The goal is to relate these nine perceptions to overall satisfaction.</p>
+</section>
+<section id="the-six-importance-measures" class="level2">
+<h2 class="anchored" data-anchor-id="the-six-importance-measures">The Six Importance Measures</h2>
+<p>Below, each measure is implemented in turn. To make them comparable, every column is rescaled to sum to 100% across the nine drivers — so each entry reads as <em>“this driver’s share of the column’s total importance.”</em></p>
+<section id="pearson-correlations" class="level3">
+<h3 class="anchored" data-anchor-id="pearson-correlations">1. Pearson correlations</h3>
+<p>The simplest measure: the bivariate correlation between each perception and satisfaction. It ignores the overlap among predictors entirely, so correlated perceptions all look similarly important.</p>
+<div id="e966c11b" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pearson <span class="op">=</span> np.array([np.corrcoef(df[c], y)[<span class="dv">0</span>, <span class="dv">1</span>] <span class="cf">for</span> c <span class="kw">in</span> predictors])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="standardized-regression-coefficients" class="level3">
+<h3 class="anchored" data-anchor-id="standardized-regression-coefficients">2. Standardized regression coefficients</h3>
+<p>Fit a single linear regression of satisfaction on all nine perceptions, after standardizing every variable to mean 0 and variance 1. Each coefficient is the partial effect of one perception <em>holding the others fixed</em>, on a common scale. Unlike correlations, this penalizes redundancy: two perceptions carrying the same information split the credit.</p>
+<div id="9de09fbd" class="cell" data-execution_count="3">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Xs <span class="op">=</span> (X <span class="op">-</span> X.mean(<span class="dv">0</span>)) <span class="op">/</span> X.std(<span class="dv">0</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ys <span class="op">=</span> (y <span class="op">-</span> y.mean()) <span class="op">/</span> y.std()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>std_coef <span class="op">=</span> LinearRegression().fit(Xs, ys).coef_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="drop-one-usefulness" class="level3">
+<h3 class="anchored" data-anchor-id="drop-one-usefulness">3. Drop-one usefulness</h3>
+<p>A predictor’s <strong>usefulness</strong> is how much the model’s <span class="math inline">\(R^2\)</span> falls when it is removed from the full model — i.e.&nbsp;the variance it explains that <em>no other predictor can</em>. This is the strictest measure: heavily correlated predictors get almost no credit, because dropping one leaves the others to cover for it.</p>
+<div id="2e977d8f" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> r2_of(idx):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""R^2 of OLS regressing y on the columns in idx."""</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(idx) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="fl">0.0</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression().fit(X[:, idx], y)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> m.score(X[:, idx], y)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>full_r2 <span class="op">=</span> r2_of(<span class="bu">list</span>(<span class="bu">range</span>(p)))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>usefulness <span class="op">=</span> np.array([</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    full_r2 <span class="op">-</span> r2_of([j <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(p) <span class="cf">if</span> j <span class="op">!=</span> i]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(p)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="shapley-values-lmg-built-from-scratch" class="level3">
+<h3 class="anchored" data-anchor-id="shapley-values-lmg-built-from-scratch">4. Shapley values (LMG) — built from scratch</h3>
+<p>The drop-one measure only asks what a predictor adds when it goes in <em>last</em>. The <strong>Shapley value</strong> (in this regression context, the LMG method of Lindeman–Merenda–Gold) fixes that by averaging the predictor’s incremental <span class="math inline">\(R^2\)</span> over <em>every possible order</em> in which the predictors could enter the model.</p>
+<p>For predictor <span class="math inline">\(i\)</span>, its Shapley value is</p>
+<p><span class="math display">\[
+\phi_i = \sum_{S \subseteq N \setminus \{i\}}
+\frac{|S|!\,(p - |S| - 1)!}{p!}
+\big[ R^2(S \cup \{i\}) - R^2(S) \big],
+\]</span></p>
+<p>where <span class="math inline">\(S\)</span> ranges over all subsets of the <em>other</em> predictors and the weight is the fraction of orderings in which exactly the set <span class="math inline">\(S\)</span> precedes <span class="math inline">\(i\)</span>. A convenient property is that the Shapley values sum exactly to the full-model <span class="math inline">\(R^2\)</span> — the method cleanly <em>decomposes</em> explained variance across predictors.</p>
+<p>With nine predictors there are only <span class="math inline">\(2^9 = 512\)</span> subsets, so I enumerate them all rather than sampling orderings. I pre-compute the <span class="math inline">\(R^2\)</span> of every subset once, then accumulate the weighted marginal contributions.</p>
+<div id="3226f641" class="cell" data-execution_count="5">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pre-compute R^2 for all 2^p subsets of predictors.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>subset_r2 <span class="op">=</span> {}</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(p <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> combo <span class="kw">in</span> itertools.combinations(<span class="bu">range</span>(p), k):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        subset_r2[combo] <span class="op">=</span> r2_of(<span class="bu">list</span>(combo))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>shapley <span class="op">=</span> np.zeros(p)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(p):</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    rest <span class="op">=</span> [j <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(p) <span class="cf">if</span> j <span class="op">!=</span> i]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(rest) <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        weight <span class="op">=</span> factorial(k) <span class="op">*</span> factorial(p <span class="op">-</span> k <span class="op">-</span> <span class="dv">1</span>) <span class="op">/</span> factorial(p)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> combo <span class="kw">in</span> itertools.combinations(rest, k):</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>            with_i <span class="op">=</span> <span class="bu">tuple</span>(<span class="bu">sorted</span>(combo <span class="op">+</span> (i,)))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            shapley[i] <span class="op">+=</span> weight <span class="op">*</span> (subset_r2[with_i] <span class="op">-</span> subset_r2[combo])</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Sanity check: Shapley values decompose the full-model R^2.</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> np.isclose(shapley.<span class="bu">sum</span>(), full_r2)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Sum of Shapley values = </span><span class="sc">{</span>shapley<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:.5f}</span><span class="ss">  (full-model R^2 = </span><span class="sc">{</span>full_r2<span class="sc">:.5f}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sum of Shapley values = 0.10901  (full-model R^2 = 0.10901)</code></pre>
+</div>
+</div>
+<p>The assertion confirms the decomposition is exact — the from-scratch implementation is internally consistent.</p>
+</section>
+<section id="johnsons-relative-weights" class="level3">
+<h3 class="anchored" data-anchor-id="johnsons-relative-weights">5. Johnson’s relative weights</h3>
+<p>Shapley/LMG is exact but its cost grows like <span class="math inline">\(2^p\)</span>, which becomes infeasible with many predictors. <strong>Johnson’s relative weights</strong> (also “Johnson’s epsilon”) give a fast, closed-form approximation. The idea: transform the correlated predictors into a set of <em>orthogonal</em> variables <span class="math inline">\(Z\)</span> that are maximally similar to the originals, regress satisfaction on <span class="math inline">\(Z\)</span> (no collinearity, so the contributions are unambiguous), then map those contributions back through the <span class="math inline">\(Z\)</span>-to-<span class="math inline">\(X\)</span> relationship.</p>
+<div id="3cfcecdf" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Orthogonal counterpart of the standardized predictors via SVD.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>U, S, Vt <span class="op">=</span> np.linalg.svd(Xs, full_matrices<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> U <span class="op">@</span> Vt                       <span class="co"># orthonormal columns, closest to Xs</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Lambda <span class="op">=</span> (Z.T <span class="op">@</span> Xs) <span class="op">/</span> n          <span class="co"># how each Z relates to each X</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>beta_z <span class="op">=</span> LinearRegression().fit(Z, ys).coef_</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>johnson <span class="op">=</span> (Lambda <span class="op">**</span> <span class="dv">2</span>) <span class="op">@</span> (beta_z <span class="op">**</span> <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Like Shapley, Johnson’s weights sum (very nearly) to the full-model <span class="math inline">\(R^2\)</span> — and in practice the two columns track each other almost exactly, which is the whole point: you get Shapley-like answers without the combinatorial cost.</p>
+</section>
+<section id="random-forest-gini-importance" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-gini-importance">6. Random forest Gini importance</h3>
+<p>All five measures above assume a linear model. A <strong>random forest</strong> relaxes that, capturing nonlinearities and interactions. Its <em>mean decrease in Gini</em> (impurity) importance records, for each predictor, the total reduction in node impurity it produces summed across all trees. Because the trees see the predictors jointly, this is another way to share credit among correlated features.</p>
+<div id="3bd1561b" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rf <span class="op">=</span> RandomForestRegressor(n_estimators<span class="op">=</span><span class="dv">500</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rf.fit(X, y)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>rf_gini <span class="op">=</span> rf.feature_importances_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="the-replicated-table" class="level2">
+<h2 class="anchored" data-anchor-id="the-replicated-table">The Replicated Table</h2>
+<div id="adf5ab04" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Pearson Correlations"</span>: pearson,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Standardized Regression Coefficients"</span>: std_coef,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Drop-One (Usefulness)"</span>: usefulness,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LMG / Shapley Values"</span>: shapley,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Johnson's Epsilon"</span>: johnson,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Mean Decrease in RF Gini"</span>: rf_gini,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}, index<span class="op">=</span>[labels[c] <span class="cf">for</span> c <span class="kw">in</span> predictors])</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Rescale each column to a share of its total (in %).</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>pct <span class="op">=</span> raw.divide(raw.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>), axis<span class="op">=</span><span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>styled <span class="op">=</span> (pct.style</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">format</span>(<span class="st">"</span><span class="sc">{:.1f}</span><span class="st">%"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    .background_gradient(cmap<span class="op">=</span><span class="st">"Greens"</span>, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    .set_caption(<span class="st">"Perception importance for overall satisfaction — each column sums to 100%"</span>))</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>styled</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<style type="text/css">
+#T_bf479_row0_col0, #T_bf479_row0_col5, #T_bf479_row8_col1, #T_bf479_row8_col2, #T_bf479_row8_col3, #T_bf479_row8_col4 {
+  background-color: #00441b;
+  color: #f1f1f1;
+}
+#T_bf479_row0_col1 {
+  background-color: #006529;
+  color: #f1f1f1;
+}
+#T_bf479_row0_col2 {
+  background-color: #268e47;
+  color: #f1f1f1;
+}
+#T_bf479_row0_col3 {
+  background-color: #00682a;
+  color: #f1f1f1;
+}
+#T_bf479_row0_col4 {
+  background-color: #006d2c;
+  color: #f1f1f1;
+}
+#T_bf479_row1_col0 {
+  background-color: #c9eac2;
+  color: #000000;
+}
+#T_bf479_row1_col1 {
+  background-color: #e6f5e1;
+  color: #000000;
+}
+#T_bf479_row1_col2 {
+  background-color: #f4fbf2;
+  color: #000000;
+}
+#T_bf479_row1_col3 {
+  background-color: #ebf7e7;
+  color: #000000;
+}
+#T_bf479_row1_col4, #T_bf479_row2_col5 {
+  background-color: #edf8e9;
+  color: #000000;
+}
+#T_bf479_row1_col5 {
+  background-color: #ceecc8;
+  color: #000000;
+}
+#T_bf479_row2_col0, #T_bf479_row6_col5 {
+  background-color: #ddf2d8;
+  color: #000000;
+}
+#T_bf479_row2_col1, #T_bf479_row3_col5 {
+  background-color: #d7efd1;
+  color: #000000;
+}
+#T_bf479_row2_col2 {
+  background-color: #f0f9ed;
+  color: #000000;
+}
+#T_bf479_row2_col3, #T_bf479_row6_col1 {
+  background-color: #eaf7e6;
+  color: #000000;
+}
+#T_bf479_row2_col4 {
+  background-color: #e9f7e5;
+  color: #000000;
+}
+#T_bf479_row3_col0 {
+  background-color: #76c578;
+  color: #000000;
+}
+#T_bf479_row3_col1 {
+  background-color: #e2f4dd;
+  color: #000000;
+}
+#T_bf479_row3_col2 {
+  background-color: #f4fbf1;
+  color: #000000;
+}
+#T_bf479_row3_col3 {
+  background-color: #d2edcc;
+  color: #000000;
+}
+#T_bf479_row3_col4 {
+  background-color: #dbf1d5;
+  color: #000000;
+}
+#T_bf479_row4_col0 {
+  background-color: #8bcf89;
+  color: #000000;
+}
+#T_bf479_row4_col1 {
+  background-color: #cbebc5;
+  color: #000000;
+}
+#T_bf479_row4_col2 {
+  background-color: #eff9eb;
+  color: #000000;
+}
+#T_bf479_row4_col3 {
+  background-color: #d4eece;
+  color: #000000;
+}
+#T_bf479_row4_col4 {
+  background-color: #d9f0d3;
+  color: #000000;
+}
+#T_bf479_row4_col5, #T_bf479_row5_col1, #T_bf479_row5_col2, #T_bf479_row6_col0, #T_bf479_row6_col3, #T_bf479_row6_col4 {
+  background-color: #f7fcf5;
+  color: #000000;
+}
+#T_bf479_row5_col0 {
+  background-color: #c0e6b9;
+  color: #000000;
+}
+#T_bf479_row5_col3 {
+  background-color: #edf8ea;
+  color: #000000;
+}
+#T_bf479_row5_col4 {
+  background-color: #f2faef;
+  color: #000000;
+}
+#T_bf479_row5_col5 {
+  background-color: #b6e2af;
+  color: #000000;
+}
+#T_bf479_row6_col2 {
+  background-color: #f5fbf2;
+  color: #000000;
+}
+#T_bf479_row7_col0 {
+  background-color: #005522;
+  color: #f1f1f1;
+}
+#T_bf479_row7_col1 {
+  background-color: #359e53;
+  color: #f1f1f1;
+}
+#T_bf479_row7_col2 {
+  background-color: #92d28f;
+  color: #000000;
+}
+#T_bf479_row7_col3 {
+  background-color: #2c944c;
+  color: #f1f1f1;
+}
+#T_bf479_row7_col4 {
+  background-color: #349d53;
+  color: #f1f1f1;
+}
+#T_bf479_row7_col5 {
+  background-color: #208843;
+  color: #f1f1f1;
+}
+#T_bf479_row8_col0 {
+  background-color: #00481d;
+  color: #f1f1f1;
+}
+#T_bf479_row8_col5 {
+  background-color: #127c39;
+  color: #f1f1f1;
+}
+</style>
+
+<div id="T_bf479" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_bf479-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Perception importance for overall satisfaction — each column sums to 100%
+</figcaption>
+<div aria-describedby="T_bf479-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="T_bf479" class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
+<th id="T_bf479_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Pearson Correlations</th>
+<th id="T_bf479_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Standardized Regression Coefficients</th>
+<th id="T_bf479_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">Drop-One (Usefulness)</th>
+<th id="T_bf479_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">LMG / Shapley Values</th>
+<th id="T_bf479_level0_col4" class="col_heading level0 col4" data-quarto-table-cell-role="th">Johnson's Epsilon</th>
+<th id="T_bf479_level0_col5" class="col_heading level0 col5" data-quarto-table-cell-role="th">Mean Decrease in RF Gini</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th id="T_bf479_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Is offered by a brand I trust</th>
+<td id="T_bf479_row0_col0" class="data row0 col0">13.3%</td>
+<td id="T_bf479_row0_col1" class="data row0 col1">25.3%</td>
+<td id="T_bf479_row0_col2" class="data row0 col2">31.5%</td>
+<td id="T_bf479_row0_col3" class="data row0 col3">19.8%</td>
+<td id="T_bf479_row0_col4" class="data row0 col4">19.8%</td>
+<td id="T_bf479_row0_col5" class="data row0 col5">15.2%</td>
+</tr>
+<tr class="even">
+<th id="T_bf479_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Helps build credit quickly</th>
+<td id="T_bf479_row1_col0" class="data row1 col0">10.0%</td>
+<td id="T_bf479_row1_col1" class="data row1 col1">4.4%</td>
+<td id="T_bf479_row1_col2" class="data row1 col2">1.0%</td>
+<td id="T_bf479_row1_col3" class="data row1 col3">6.6%</td>
+<td id="T_bf479_row1_col4" class="data row1 col4">6.6%</td>
+<td id="T_bf479_row1_col5" class="data row1 col5">10.0%</td>
+</tr>
+<tr class="odd">
+<th id="T_bf479_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">Is different from other cards</th>
+<td id="T_bf479_row2_col0" class="data row2 col0">9.6%</td>
+<td id="T_bf479_row2_col1" class="data row2 col1">6.1%</td>
+<td id="T_bf479_row2_col2" class="data row2 col2">2.1%</td>
+<td id="T_bf479_row2_col3" class="data row2 col3">6.7%</td>
+<td id="T_bf479_row2_col4" class="data row2 col4">7.0%</td>
+<td id="T_bf479_row2_col5" class="data row2 col5">9.0%</td>
+</tr>
+<tr class="even">
+<th id="T_bf479_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">Is easy to use</th>
+<td id="T_bf479_row3_col0" class="data row3 col0">11.1%</td>
+<td id="T_bf479_row3_col1" class="data row3 col1">4.8%</td>
+<td id="T_bf479_row3_col2" class="data row3 col2">1.1%</td>
+<td id="T_bf479_row3_col3" class="data row3 col3">8.5%</td>
+<td id="T_bf479_row3_col4" class="data row3 col4">8.2%</td>
+<td id="T_bf479_row3_col5" class="data row3 col5">9.7%</td>
+</tr>
+<tr class="odd">
+<th id="T_bf479_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">Has appealing benefits or rewards</th>
+<td id="T_bf479_row4_col0" class="data row4 col0">10.8%</td>
+<td id="T_bf479_row4_col1" class="data row4 col1">7.4%</td>
+<td id="T_bf479_row4_col2" class="data row4 col2">2.7%</td>
+<td id="T_bf479_row4_col3" class="data row4 col3">8.4%</td>
+<td id="T_bf479_row4_col4" class="data row4 col4">8.3%</td>
+<td id="T_bf479_row4_col5" class="data row4 col5">8.5%</td>
+</tr>
+<tr class="even">
+<th id="T_bf479_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">Rewards me for responsible usage</th>
+<td id="T_bf479_row5_col0" class="data row5 col0">10.1%</td>
+<td id="T_bf479_row5_col1" class="data row5 col1">1.1%</td>
+<td id="T_bf479_row5_col2" class="data row5 col2">0.1%</td>
+<td id="T_bf479_row5_col3" class="data row5 col3">6.3%</td>
+<td id="T_bf479_row5_col4" class="data row5 col4">6.0%</td>
+<td id="T_bf479_row5_col5" class="data row5 col5">10.5%</td>
+</tr>
+<tr class="odd">
+<th id="T_bf479_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">Is used by a lot of people</th>
+<td id="T_bf479_row6_col0" class="data row6 col0">8.9%</td>
+<td id="T_bf479_row6_col1" class="data row6 col1">3.6%</td>
+<td id="T_bf479_row6_col2" class="data row6 col2">0.8%</td>
+<td id="T_bf479_row6_col3" class="data row6 col3">5.2%</td>
+<td id="T_bf479_row6_col4" class="data row6 col4">5.4%</td>
+<td id="T_bf479_row6_col5" class="data row6 col5">9.5%</td>
+</tr>
+<tr class="even">
+<th id="T_bf479_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">Provides outstanding customer service</th>
+<td id="T_bf479_row7_col0" class="data row7 col0">13.0%</td>
+<td id="T_bf479_row7_col1" class="data row7 col1">19.3%</td>
+<td id="T_bf479_row7_col2" class="data row7 col2">17.9%</td>
+<td id="T_bf479_row7_col3" class="data row7 col3">16.9%</td>
+<td id="T_bf479_row7_col4" class="data row7 col4">16.6%</td>
+<td id="T_bf479_row7_col5" class="data row7 col5">13.6%</td>
+</tr>
+<tr class="odd">
+<th id="T_bf479_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">Makes a difference in my life</th>
+<td id="T_bf479_row8_col0" class="data row8 col0">13.2%</td>
+<td id="T_bf479_row8_col1" class="data row8 col1">28.0%</td>
+<td id="T_bf479_row8_col2" class="data row8 col2">42.8%</td>
+<td id="T_bf479_row8_col3" class="data row8 col3">21.6%</td>
+<td id="T_bf479_row8_col4" class="data row8 col4">22.0%</td>
+<td id="T_bf479_row8_col5" class="data row8 col5">14.0%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="reading-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="reading-the-results">Reading the Results</h2>
+<p>Despite using six very different definitions of “importance,” the story is remarkably stable:</p>
+<ul>
+<li><strong><code>Makes a difference in my life</code>, <code>Is offered by a brand I trust</code>, and <code>Provides outstanding customer service</code></strong> rise to the top in essentially every column. These are the genuine key drivers — the perceptions worth investing in.</li>
+<li>The <strong>Pearson</strong> column is the flattest: because it ignores predictor overlap, every perception looks moderately important and the top drivers are only barely ahead.</li>
+<li>The <strong>drop-one usefulness</strong> column is the spikiest: it credits a predictor only with the variance <em>uniquely</em> its own, so the three leaders dominate and the rest nearly vanish. This is the danger of relying on a single measure — usefulness alone would wrongly suggest six of the nine perceptions barely matter.</li>
+<li><strong>Shapley</strong> and <strong>Johnson’s epsilon</strong> are almost identical, confirming Johnson’s weights as a trustworthy fast approximation of the exact Shapley decomposition. Both sit sensibly <em>between</em> the raw correlation and the strict drop-one extremes — which is exactly why they are the preferred default for key drivers work (boxed on the original slide).</li>
+<li>The <strong>random forest</strong> column is the flattest after Pearson. With binary predictors and a roughly additive relationship there is little nonlinearity for the trees to exploit, so importance spreads fairly evenly — though the same three drivers still edge ahead.</li>
+</ul>
+<p>The practical takeaway mirrors the slide’s: no single number settles “what matters most,” but when six independent methods agree on the same handful of drivers, you can act on that ranking with confidence.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

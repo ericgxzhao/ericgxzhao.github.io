@@ -1,0 +1,199 @@
+---
+title: "Key Drivers Analysis"
+author: "Eric Zhao"
+date: today
+format:
+  html:
+    code-fold: true
+---
+
+## Introduction
+
+A **key drivers analysis** answers a deceptively simple business question: *of all the things customers say about our product, which perceptions matter most for overall satisfaction?* Marketing teams use the answer to decide where to invest — is it more valuable to make the product *easier to use*, or to deepen the sense that it *makes a difference in my life*?
+
+The trouble is that "matters most" has no single definition. The predictors are correlated with each other, so the importance you attribute to any one of them depends on how you account for the variance it shares with the others. Different defensible methods give different answers. The standard practice — popularized in the *key drivers* slides this assignment replicates — is therefore to compute **several** importance measures and read them together, looking for variables that rank high across the board.
+
+This post replicates slide 75 of the key drivers deck using a customer-satisfaction survey. For each of nine brand perceptions I compute six importance measures:
+
+1. **Pearson correlations** — raw bivariate association
+2. **Standardized regression coefficients** — partial effect, holding others constant
+3. **Drop-one ("usefulness")** — the unique variance a predictor adds last
+4. **Shapley values (LMG)** — average marginal contribution over all variable orderings
+5. **Johnson's relative weights (epsilon)** — a fast approximation of Shapley
+6. **Mean decrease in Gini from a random forest** — a nonlinear, tree-based importance
+
+As a *medium challenge*, the Shapley values are computed from scratch — averaging the incremental $R^2$ a predictor contributes across every possible ordering of the predictors — rather than calling a packaged routine.
+
+## The Data
+
+The survey contains 2,553 respondents. Each rated their overall `satisfaction` (1–5) and answered nine yes/no perception questions about the brand.
+
+```{python}
+#| warning: false
+import pandas as pd
+import numpy as np
+import itertools
+from math import factorial
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+
+df = pd.read_csv("../data/data_for_drivers_analysis.csv")
+
+y = df["satisfaction"].values
+predictors = ["trust", "build", "differs", "easy", "appealing",
+              "rewarding", "popular", "service", "impact"]
+labels = {
+    "trust":     "Is offered by a brand I trust",
+    "build":     "Helps build credit quickly",
+    "differs":   "Is different from other cards",
+    "easy":      "Is easy to use",
+    "appealing": "Has appealing benefits or rewards",
+    "rewarding": "Rewards me for responsible usage",
+    "popular":   "Is used by a lot of people",
+    "service":   "Provides outstanding customer service",
+    "impact":    "Makes a difference in my life",
+}
+X = df[predictors].values
+n, p = X.shape
+df.head()
+```
+
+Each perception is a binary indicator (1 = the respondent agrees the card has that quality). The goal is to relate these nine perceptions to overall satisfaction.
+
+## The Six Importance Measures
+
+Below, each measure is implemented in turn. To make them comparable, every column is rescaled to sum to 100% across the nine drivers — so each entry reads as *"this driver's share of the column's total importance."*
+
+### 1. Pearson correlations
+
+The simplest measure: the bivariate correlation between each perception and satisfaction. It ignores the overlap among predictors entirely, so correlated perceptions all look similarly important.
+
+```{python}
+pearson = np.array([np.corrcoef(df[c], y)[0, 1] for c in predictors])
+```
+
+### 2. Standardized regression coefficients
+
+Fit a single linear regression of satisfaction on all nine perceptions, after standardizing every variable to mean 0 and variance 1. Each coefficient is the partial effect of one perception *holding the others fixed*, on a common scale. Unlike correlations, this penalizes redundancy: two perceptions carrying the same information split the credit.
+
+```{python}
+Xs = (X - X.mean(0)) / X.std(0)
+ys = (y - y.mean()) / y.std()
+std_coef = LinearRegression().fit(Xs, ys).coef_
+```
+
+### 3. Drop-one usefulness
+
+A predictor's **usefulness** is how much the model's $R^2$ falls when it is removed from the full model — i.e. the variance it explains that *no other predictor can*. This is the strictest measure: heavily correlated predictors get almost no credit, because dropping one leaves the others to cover for it.
+
+```{python}
+def r2_of(idx):
+    """R^2 of OLS regressing y on the columns in idx."""
+    if len(idx) == 0:
+        return 0.0
+    m = LinearRegression().fit(X[:, idx], y)
+    return m.score(X[:, idx], y)
+
+full_r2 = r2_of(list(range(p)))
+usefulness = np.array([
+    full_r2 - r2_of([j for j in range(p) if j != i]) for i in range(p)
+])
+```
+
+### 4. Shapley values (LMG) — built from scratch
+
+The drop-one measure only asks what a predictor adds when it goes in *last*. The **Shapley value** (in this regression context, the LMG method of Lindeman–Merenda–Gold) fixes that by averaging the predictor's incremental $R^2$ over *every possible order* in which the predictors could enter the model.
+
+For predictor $i$, its Shapley value is
+
+$$
+\phi_i = \sum_{S \subseteq N \setminus \{i\}}
+\frac{|S|!\,(p - |S| - 1)!}{p!}
+\big[ R^2(S \cup \{i\}) - R^2(S) \big],
+$$
+
+where $S$ ranges over all subsets of the *other* predictors and the weight is the fraction of orderings in which exactly the set $S$ precedes $i$. A convenient property is that the Shapley values sum exactly to the full-model $R^2$ — the method cleanly *decomposes* explained variance across predictors.
+
+With nine predictors there are only $2^9 = 512$ subsets, so I enumerate them all rather than sampling orderings. I pre-compute the $R^2$ of every subset once, then accumulate the weighted marginal contributions.
+
+```{python}
+# Pre-compute R^2 for all 2^p subsets of predictors.
+subset_r2 = {}
+for k in range(p + 1):
+    for combo in itertools.combinations(range(p), k):
+        subset_r2[combo] = r2_of(list(combo))
+
+shapley = np.zeros(p)
+for i in range(p):
+    rest = [j for j in range(p) if j != i]
+    for k in range(len(rest) + 1):
+        weight = factorial(k) * factorial(p - k - 1) / factorial(p)
+        for combo in itertools.combinations(rest, k):
+            with_i = tuple(sorted(combo + (i,)))
+            shapley[i] += weight * (subset_r2[with_i] - subset_r2[combo])
+
+# Sanity check: Shapley values decompose the full-model R^2.
+assert np.isclose(shapley.sum(), full_r2)
+print(f"Sum of Shapley values = {shapley.sum():.5f}  (full-model R^2 = {full_r2:.5f})")
+```
+
+The assertion confirms the decomposition is exact — the from-scratch implementation is internally consistent.
+
+### 5. Johnson's relative weights
+
+Shapley/LMG is exact but its cost grows like $2^p$, which becomes infeasible with many predictors. **Johnson's relative weights** (also "Johnson's epsilon") give a fast, closed-form approximation. The idea: transform the correlated predictors into a set of *orthogonal* variables $Z$ that are maximally similar to the originals, regress satisfaction on $Z$ (no collinearity, so the contributions are unambiguous), then map those contributions back through the $Z$-to-$X$ relationship.
+
+```{python}
+# Orthogonal counterpart of the standardized predictors via SVD.
+U, S, Vt = np.linalg.svd(Xs, full_matrices=False)
+Z = U @ Vt                       # orthonormal columns, closest to Xs
+Lambda = (Z.T @ Xs) / n          # how each Z relates to each X
+beta_z = LinearRegression().fit(Z, ys).coef_
+johnson = (Lambda ** 2) @ (beta_z ** 2)
+```
+
+Like Shapley, Johnson's weights sum (very nearly) to the full-model $R^2$ — and in practice the two columns track each other almost exactly, which is the whole point: you get Shapley-like answers without the combinatorial cost.
+
+### 6. Random forest Gini importance
+
+All five measures above assume a linear model. A **random forest** relaxes that, capturing nonlinearities and interactions. Its *mean decrease in Gini* (impurity) importance records, for each predictor, the total reduction in node impurity it produces summed across all trees. Because the trees see the predictors jointly, this is another way to share credit among correlated features.
+
+```{python}
+rf = RandomForestRegressor(n_estimators=500, random_state=42)
+rf.fit(X, y)
+rf_gini = rf.feature_importances_
+```
+
+## The Replicated Table
+
+```{python}
+raw = pd.DataFrame({
+    "Pearson Correlations": pearson,
+    "Standardized Regression Coefficients": std_coef,
+    "Drop-One (Usefulness)": usefulness,
+    "LMG / Shapley Values": shapley,
+    "Johnson's Epsilon": johnson,
+    "Mean Decrease in RF Gini": rf_gini,
+}, index=[labels[c] for c in predictors])
+
+# Rescale each column to a share of its total (in %).
+pct = raw.divide(raw.sum(axis=0), axis=1) * 100
+
+styled = (pct.style
+    .format("{:.1f}%")
+    .background_gradient(cmap="Greens", axis=0)
+    .set_caption("Perception importance for overall satisfaction — each column sums to 100%"))
+styled
+```
+
+## Reading the Results
+
+Despite using six very different definitions of "importance," the story is remarkably stable:
+
+- **`Makes a difference in my life`, `Is offered by a brand I trust`, and `Provides outstanding customer service`** rise to the top in essentially every column. These are the genuine key drivers — the perceptions worth investing in.
+- The **Pearson** column is the flattest: because it ignores predictor overlap, every perception looks moderately important and the top drivers are only barely ahead.
+- The **drop-one usefulness** column is the spikiest: it credits a predictor only with the variance *uniquely* its own, so the three leaders dominate and the rest nearly vanish. This is the danger of relying on a single measure — usefulness alone would wrongly suggest six of the nine perceptions barely matter.
+- **Shapley** and **Johnson's epsilon** are almost identical, confirming Johnson's weights as a trustworthy fast approximation of the exact Shapley decomposition. Both sit sensibly *between* the raw correlation and the strict drop-one extremes — which is exactly why they are the preferred default for key drivers work (boxed on the original slide).
+- The **random forest** column is the flattest after Pearson. With binary predictors and a roughly additive relationship there is little nonlinearity for the trees to exploit, so importance spreads fairly evenly — though the same three drivers still edge ahead.
+
+The practical takeaway mirrors the slide's: no single number settles "what matters most," but when six independent methods agree on the same handful of drivers, you can act on that ranking with confidence.

@@ -1,0 +1,37 @@
+---
+title: "Guanxiang(Eric) Zhao"
+toc: false
+about:
+  template: trestles
+  image: files/profile_pic.jpg
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/guanxiang-zhao/
+    - icon: github
+      text: Github
+      href: https://github.com/ericgxzhao
+    - icon: envelope
+      text: Email
+      href: mailto:g1zhao@ucsd.edu
+---
+
+I'm Eric Zhao, a Master of Science in Business Analytics student at UC San Diego with a background in business economics. My experience spans analytics, strategy, and operations across industries, with previous exposure to organizations such as Mercedes-Benz and McKinsey. I'm especially interested in using data to solve practical business problems in areas like customer analytics, marketing, and supply chain decision-making.
+
+## Education
+
+**University of California, San Diego** | San Diego, CA\
+Master of Science in Business Analytics\
+[July 2025 – Dec 2026]{.meta}
+
+**University of California, San Diego** | San Diego, CA\
+B.S. in Business Economics\
+[Sept 2021 – Mar 2025]{.meta}
+
+## Experience
+
+**McKinsey & Co** | Strategy Consultant\
+[Oct 2024 – Dec 2024]{.meta}
+
+**Mercedes-Benz Group China** | Business Analyst\
+[June 2024 – Sept 2024]{.meta}

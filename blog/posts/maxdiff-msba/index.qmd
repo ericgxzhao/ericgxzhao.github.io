@@ -1,0 +1,620 @@
+---
+title: "MaxDiff Analysis of MSBA Class Preferences"
+subtitle: "Counts, MLE, and Bayesian Estimation of the Multinomial Logit Model"
+author: "Eric Zhao"
+date: "2026-05-28"
+categories: [statistics, MLE, Bayesian, MaxDiff, MNL]
+format:
+  html:
+    code-fold: true
+---
+
+## Introduction
+
+**MaxDiff** (also called *Best-Worst Scaling*) is a survey methodology for measuring how strongly people prefer one item over another. On each screen, the respondent sees a small subset of items and selects both the *most-preferred* and the *least-preferred*. This design forces genuine trade-offs and sidesteps the scale-use bias endemic to rating questions — humans are far better at comparing two options than at assigning calibrated numeric scores.
+
+In this study, 85 MSBA students at UC San Diego Rady School of Management responded to a MaxDiff survey over the 10 core MSBA courses. On each of 8 screens, they saw 4 courses and chose the one they most preferred and the one they least preferred. Three estimation methods are applied and compared:
+
+1. **Counts analysis** — % times each class was picked best minus % times picked worst
+2. **Multinomial Logit (MNL) via Maximum Likelihood** — a probabilistic choice model with classical standard errors
+3. **MNL via Bayesian Estimation** — the same model fit with Metropolis-Hastings MCMC, yielding full posteriors on all quantities
+
+All three should agree on the broad ranking; they differ in statistical rigor, how uncertainty is communicated, and what extensions they naturally support.
+
+## The Data
+
+```{python}
+#| warning: false
+import pandas as pd
+import numpy as np
+from scipy.special import logsumexp
+from scipy.optimize import minimize
+from scipy.stats import norm as sp_norm
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+import warnings
+warnings.filterwarnings('ignore')
+from IPython.display import display
+
+def style_table(df, caption):
+    return df.style.set_caption(caption).set_table_styles([
+        {'selector': 'caption',
+         'props': [('font-weight', 'bold'), ('font-size', '1.0em'),
+                   ('text-align', 'left'), ('margin-bottom', '6px')]},
+        {'selector': 'th',
+         'props': [('text-align', 'center'), ('padding', '6px 14px'),
+                   ('border-bottom', '2px solid #555')]},
+        {'selector': 'td',
+         'props': [('text-align', 'right'), ('padding', '5px 14px')]},
+        {'selector': 'tr:nth-child(even)',
+         'props': [('background-color', 'rgba(255,255,255,0.03)')]},
+    ])
+
+np.random.seed(42)
+plt.rcParams.update({
+    'figure.facecolor': 'white',
+    'axes.facecolor': '#f2f2f2',
+    'axes.grid': True,
+    'grid.alpha': 0.4,
+    'font.size': 11,
+    'axes.spines.top': False,
+    'axes.spines.right': False,
+})
+
+# Load data
+df = pd.read_csv('data/maxdiff_design_and_choices.csv')
+df.columns = ['record_id', 'task', 'position', 'item', 'response']
+df['item_idx'] = df['item'] - 1  # 0-based index
+
+# Item labels (short versions for plots)
+short_labels = {
+    1: 'AI Math & Prog.',
+    2: 'SQL',
+    3: 'Mkt/Fin/Ops',
+    4: 'Large Data',
+    5: 'Business Analytics',
+    6: 'Analytics Consulting',
+    7: 'Customer Analytics',
+    8: 'Capstone Project',
+    9: 'Marketing Analytics',
+    10: 'BI Systems',
+}
+
+full_labels = {
+    1: 'MGTA 403 AI Math, Prog. & Analytics',
+    2: 'MGTA 464 SQL',
+    3: 'MGTA 451 Marketing/Finance/Operations',
+    4: 'MGTA 452 Large Data',
+    5: 'MGTA 453 Business Analytics',
+    6: 'MGTA 444 Analytics Consulting',
+    7: 'MGTA 455 Customer Analytics',
+    8: 'MGTA 454 Capstone Project',
+    9: 'MGTA 495 Marketing Analytics',
+    10: 'MGTA 457 BI Systems',
+}
+
+# Filter to standard 4-item tasks (Tasks 1–8)
+df4 = df[df['task'] <= 8].copy()
+
+N = df4['record_id'].nunique()
+T = df4.groupby('record_id')['task'].nunique().iloc[0]
+J = 4
+K = 10
+
+print(f"Number of respondents (N): {N}")
+print(f"Tasks per respondent (T): {T}")
+print(f"Items per task (J):       {J}")
+print(f"Total items in study:     {K}")
+```
+
+```{python}
+# Sanity check: every task has exactly 1 best, 1 worst, 2 neutral
+task_checks = df4.groupby(['record_id', 'task'])['response'].agg(
+    n_best=lambda x: (x == 1).sum(),
+    n_worst=lambda x: (x == -1).sum(),
+)
+assert (task_checks['n_best'] == 1).all(), "Some task lacks exactly 1 best pick"
+assert (task_checks['n_worst'] == 1).all(), "Some task lacks exactly 1 worst pick"
+print("Sanity check passed: every task has exactly 1 best and 1 worst pick.")
+
+# Exposure counts
+exposure = df4.groupby('item').size().reset_index(name='times_shown')
+exposure['label'] = exposure['item'].map(short_labels)
+tbl_exp = exposure[['item', 'label', 'times_shown']].rename(
+    columns={'item': 'Item', 'label': 'Label', 'times_shown': 'Times Shown'})
+print(f"Exposure counts — mean = {exposure['times_shown'].mean():.0f} (should be roughly equal):")
+display(style_table(tbl_exp, 'Exposure Counts per Course')
+    .set_properties(subset=['Label'], **{'text-align': 'left'}))
+```
+
+The survey has a balanced design: each of the 10 courses appears roughly the same number of times across all tasks, ensuring no course gets more "airtime" than another.
+
+## Counts Analysis
+
+For each course $j$, the counts score is the fraction of times it was picked best minus the fraction of times it was picked worst (both relative to how often it was shown):
+
+$$
+\text{score}_j = \frac{\#\text{best}_j}{\#\text{shown}_j} - \frac{\#\text{worst}_j}{\#\text{shown}_j}
+$$
+
+A score near +1 means almost always chosen as best; near −1, almost always worst. Scores near 0 are polarizing or middling.
+
+```{python}
+# Compute per-item counts
+item_stats = df4.groupby('item').agg(
+    shown=('response', 'count'),
+    n_best=('response', lambda x: (x == 1).sum()),
+    n_worst=('response', lambda x: (x == -1).sum())
+).reset_index()
+item_stats['pct_best']  = item_stats['n_best']  / item_stats['shown']
+item_stats['pct_worst'] = item_stats['n_worst'] / item_stats['shown']
+item_stats['score']     = item_stats['pct_best'] - item_stats['pct_worst']
+item_stats['label']     = item_stats['item'].map(short_labels)
+
+# Bootstrap 95% CIs (resample respondents with replacement)
+respondents  = df4['record_id'].unique()
+resp_to_idx  = {r: i for i, r in enumerate(respondents)}
+n_resp       = len(respondents)
+
+shown_mat = np.zeros((n_resp, K), dtype=int)
+best_mat  = np.zeros((n_resp, K), dtype=int)
+worst_mat = np.zeros((n_resp, K), dtype=int)
+
+for _, row in df4.groupby(['record_id', 'item']).agg(
+    shown=('response', 'count'),
+    n_best=('response', lambda x: (x == 1).sum()),
+    n_worst=('response', lambda x: (x == -1).sum())
+).reset_index().iterrows():
+    ri = resp_to_idx[row['record_id']]
+    ii = int(row['item']) - 1
+    shown_mat[ri, ii] = row['shown']
+    best_mat[ri, ii]  = row['n_best']
+    worst_mat[ri, ii] = row['n_worst']
+
+rng = np.random.RandomState(42)
+n_boot = 1_000
+boot_scores = np.zeros((n_boot, K))
+for b in range(n_boot):
+    idx     = rng.choice(n_resp, size=n_resp, replace=True)
+    b_shown = shown_mat[idx].sum(axis=0)
+    b_best  = best_mat[idx].sum(axis=0)
+    b_worst = worst_mat[idx].sum(axis=0)
+    boot_scores[b] = b_best / b_shown - b_worst / b_shown
+
+ci_lo = np.percentile(boot_scores, 2.5,  axis=0)
+ci_hi = np.percentile(boot_scores, 97.5, axis=0)
+item_stats['ci_lo'] = [ci_lo[i - 1] for i in item_stats['item']]
+item_stats['ci_hi'] = [ci_hi[i - 1] for i in item_stats['item']]
+item_stats = item_stats.sort_values('score', ascending=False).reset_index(drop=True)
+
+# Display table
+tbl = item_stats[['item', 'label', 'shown', 'n_best', 'n_worst',
+                   'pct_best', 'pct_worst', 'score']].copy()
+tbl.columns = ['Item', 'Label', 'Shown', 'Best', 'Worst', '% Best', '% Worst', 'Score']
+tbl['% Best']  = tbl['% Best'].map('{:.1%}'.format)
+tbl['% Worst'] = tbl['% Worst'].map('{:.1%}'.format)
+tbl['Score']   = tbl['Score'].map('{:+.3f}'.format)
+display(style_table(tbl, 'Table 1 — Counts Analysis: Times Shown, Best/Worst Picks, and Score')
+    .set_properties(subset=['Label'], **{'text-align': 'left'}))
+```
+
+```{python}
+# Bar chart with bootstrap CIs
+fig, ax = plt.subplots(figsize=(9, 4))
+colors = ['#1565C0' if s > 0 else '#C62828' for s in item_stats['score']]
+y_pos  = range(len(item_stats))
+xerr   = [item_stats['score'].values - item_stats['ci_lo'].values,
+          item_stats['ci_hi'].values  - item_stats['score'].values]
+
+ax.barh(y_pos, item_stats['score'], xerr=xerr, color=colors, alpha=0.75,
+        ecolor='#444', capsize=4, height=0.62)
+ax.set_yticks(y_pos)
+ax.set_yticklabels(item_stats['label'], fontsize=10)
+ax.axvline(0, color='black', linewidth=0.9, linestyle='--', alpha=0.5)
+ax.set_xlabel('Score  (% Best − % Worst)', fontsize=11)
+ax.set_title('Counts Analysis: MSBA Class Preferences\n'
+             '(with 95% Bootstrap CIs, respondent-level resampling)', fontsize=12)
+ax.invert_yaxis()
+plt.tight_layout()
+plt.show()
+```
+
+**Findings.** Marketing Analytics (MGTA 495) dominates by a wide margin — students picked it best far more often than any other course. Business Analytics and Customer Analytics form a solid second tier with clearly positive scores, while Large Data and Capstone hover near zero. SQL is just barely negative (−0.004), indistinguishable from neutral. At the bottom, Analytics Consulting and Mkt/Fin/Ops are consistently chosen as least preferred. The wide confidence intervals in the middle of the ranking warn against over-interpreting adjacent ranks there.
+
+## From MaxDiff Data to MNL Choices
+
+The Multinomial Logit (MNL) model treats each survey screen as a discrete choice. Assign each course $j$ a scalar utility $\beta_j$. On a screen showing items $\{a, b, c, d\}$, the probability that course $b$ is picked **best** is the standard softmax:
+
+$$
+P(\text{best} = b) = \frac{e^{\beta_b}}{e^{\beta_a} + e^{\beta_b} + e^{\beta_c} + e^{\beta_d}}
+$$
+
+After the best is removed, the probability that course $c$ is picked **worst** from the remaining three — using *negated* utilities — is:
+
+$$
+P(\text{worst} = c \mid \text{best} = b) = \frac{e^{-\beta_c}}{e^{-\beta_a} + e^{-\beta_c} + e^{-\beta_d}}
+$$
+
+Negating utilities is the key: a course with high $\beta$ is *unlikely* to be picked worst (exp(−large) ≈ 0), which is exactly what we want.
+
+Each task therefore contributes **two** MNL observations — the best-pick and the worst-pick — doubling the information extracted from each screen.
+
+**Identifiability.** The softmax is invariant to adding a constant to all $\beta$'s, so only $K - 1 = 9$ parameters are identified. We fix $\beta_1 = 0$ (AI Math & Prog. as the reference category) and estimate $\beta_2, \ldots, \beta_{10}$.
+
+```{python}
+# Reshape data: one row per task, recording the 4 shown items, best, worst
+tasks_list = []
+for (rid, t), g in df4.groupby(['record_id', 'task']):
+    items = g.sort_values('position')['item_idx'].values.astype(int)
+    best  = int(g.loc[g['response'] ==  1, 'item_idx'].values[0])
+    worst = int(g.loc[g['response'] == -1, 'item_idx'].values[0])
+    tasks_list.append((items, best, worst))
+
+n_tasks   = len(tasks_list)
+shown_arr = np.array([t[0] for t in tasks_list], dtype=int)   # (680, 4)
+best_arr  = np.array([t[1] for t in tasks_list], dtype=int)   # (680,)
+worst_arr = np.array([t[2] for t in tasks_list], dtype=int)   # (680,)
+
+print(f"Tasks: {n_tasks}  →  {2 * n_tasks} MNL choice observations total")
+```
+
+## MNL via Maximum Likelihood
+
+The log-likelihood sums the best-pick and worst-pick log-probabilities over all $N \times T = 680$ tasks:
+
+$$
+\ell(\boldsymbol\beta) = \sum_{\text{tasks}} \Bigl[
+  \underbrace{\beta_{j^*_b} - \log\!\!\sum_{j \in \mathcal{S}} e^{\beta_j}}_{\text{best pick}}
+  \;-\;
+  \underbrace{\beta_{j^*_w} + \log\!\!\!\!\sum_{j \in \mathcal{S}\setminus\{j^*_b\}} e^{-\beta_j}}_{\text{worst pick}}
+\Bigr]
+$$
+
+where $\mathcal{S}$ is the set of shown items, $j^*_b$ is the best pick, and $j^*_w$ is the worst pick. The `logsumexp` trick ensures numerical stability.
+
+```{python}
+def log_lik(beta9):
+    """Log-likelihood of best+worst MaxDiff choices. beta9: length-9 vector (beta_2..beta_10)."""
+    beta = np.r_[0.0, beta9]           # full 10-vector; beta_1 pinned to 0
+    shown_betas = beta[shown_arr]      # (n_tasks, 4)
+
+    # --- best pick ---
+    best_betas = beta[best_arr]        # (n_tasks,)
+    ll_best = best_betas - logsumexp(shown_betas, axis=1)
+
+    # --- worst pick: exclude best item from denominator ---
+    neg_shown = -shown_betas.copy()
+    neg_shown[shown_arr == best_arr[:, None]] = -np.inf   # mask the best item out
+    worst_betas = beta[worst_arr]
+    ll_worst = -worst_betas - logsumexp(neg_shown, axis=1)
+
+    return np.sum(ll_best) + np.sum(ll_worst)
+
+
+# Maximize log-likelihood via L-BFGS-B
+result = minimize(lambda b: -log_lik(b), x0=np.zeros(9), method='L-BFGS-B',
+                  options={'maxiter': 500, 'ftol': 1e-12, 'gtol': 1e-7})
+beta_mle9 = result.x
+beta_mle  = np.r_[0.0, beta_mle9]
+print(f"Optimization converged: {result.success}")
+print(f"Log-likelihood at MLE:  {-result.fun:.2f}")
+```
+
+```{python}
+# Standard errors from numerical Hessian of the negative log-likelihood
+def num_hessian(f, x, h=1e-4):
+    n = len(x)
+    H = np.zeros((n, n))
+    for i in range(n):
+        for j in range(i, n):
+            xpp = x.copy(); xpp[i] += h; xpp[j] += h
+            xpm = x.copy(); xpm[i] += h; xpm[j] -= h
+            xmp = x.copy(); xmp[i] -= h; xmp[j] += h
+            xmm = x.copy(); xmm[i] -= h; xmm[j] -= h
+            H[i, j] = (f(xpp) - f(xpm) - f(xmp) + f(xmm)) / (4 * h**2)
+            H[j, i] = H[i, j]
+    return H
+
+H   = num_hessian(lambda b: -log_lik(b), beta_mle9)
+cov = np.linalg.inv(H)
+se9 = np.sqrt(np.diag(cov))
+se_full = np.r_[0.0, se9]            # SE for item 1 is 0 (reference)
+
+# Shares of preference: softmax of all 10 betas
+shares_mle = np.exp(beta_mle) / np.exp(beta_mle).sum()
+
+# Results table
+mle_df = pd.DataFrame({
+    'item':  np.arange(1, 11),
+    'label': [short_labels[i] for i in range(1, 11)],
+    'beta':  beta_mle,
+    'se':    se_full,
+    'share': shares_mle,
+})
+mle_df = mle_df.sort_values('share', ascending=False).reset_index(drop=True)
+
+tbl = mle_df.copy()
+tbl['beta']  = tbl['beta'].map('{:+.3f}'.format)
+tbl['se']    = tbl['se'].map('{:.3f}'.format)
+tbl['share'] = tbl['share'].map('{:.4f}'.format)
+tbl_display = tbl[['item', 'label', 'beta', 'se', 'share']].rename(
+    columns={'item': 'Item', 'label': 'Label', 'beta': 'β̂', 'se': 'SE', 'share': 'Share'})
+display(style_table(tbl_display, 'Table 2 — MLE Estimates: β̂, Standard Errors, and Shares of Preference')
+    .set_properties(subset=['Label'], **{'text-align': 'left'}))
+```
+
+```{python}
+# MLE bar chart — shares of preference
+fig, ax = plt.subplots(figsize=(9, 4))
+y_pos = range(len(mle_df))
+ax.barh(y_pos, mle_df['share'], color='#E64A19', alpha=0.78, height=0.62)
+ax.set_yticks(y_pos)
+ax.set_yticklabels(mle_df['label'], fontsize=10)
+ax.set_xlabel('Share of Preference  (sums to 1 across all 10 courses)', fontsize=11)
+ax.set_title('MNL via MLE: Shares of Preference\n'
+             r'$\hat{s}_j = e^{\hat\beta_j}\,/\,\sum_k e^{\hat\beta_k}$', fontsize=12)
+ax.axvline(0.1, color='gray', linestyle='--', alpha=0.45, linewidth=0.9)
+ax.text(0.101, -0.8, '10% (equal share)', color='gray', fontsize=8)
+ax.invert_yaxis()
+plt.tight_layout()
+plt.show()
+```
+
+**Shares of preference** answer a concrete question: *if all 10 courses were on a single screen, what fraction of choices would each one attract?* With equal preferences the answer would be 10% each; Marketing Analytics captures roughly 28% — nearly three times its equal share.
+
+**Counts vs. MLE ranking.** The two methods produce nearly identical rankings. The MNL's main edge is statistical: every item shown but *not* picked supplies information about its utility, and the choice context (which items it competed against) is explicitly modeled. In counts analysis, a course that always appeared alongside very disliked options would earn an artificially high score. MNL corrects for this.
+
+## MNL via Bayesian Estimation
+
+Bayesian inference targets the full posterior rather than a single point estimate:
+
+$$
+\pi(\boldsymbol\beta \mid \boldsymbol y) \;\propto\; L(\boldsymbol\beta) \cdot \pi(\boldsymbol\beta)
+$$
+
+We use a weakly informative prior $\boldsymbol\beta \sim \mathcal{N}(\mathbf{0},\; 10\cdot\mathbf{I})$ — a standard deviation of ≈ 3.2 per coefficient is diffuse enough to not pull estimates toward zero in any meaningful way. The posterior is sampled via a random-walk Metropolis-Hastings algorithm.
+
+```{python}
+def log_post(beta9):
+    """Log-posterior: log-likelihood + log-prior (N(0,10) each component)."""
+    return log_lik(beta9) + np.sum(sp_norm.logpdf(beta9, 0, np.sqrt(10)))
+
+
+def mh_sampler(beta0, n_iter, step, seed=42):
+    rng_mh = np.random.RandomState(seed)
+    K      = len(beta0)
+    draws  = np.zeros((n_iter, K))
+    beta   = beta0.copy()
+    lp     = log_post(beta)
+    accept = 0
+    for t in range(n_iter):
+        beta_star = beta + rng_mh.randn(K) * step
+        lp_star   = log_post(beta_star)
+        if np.log(rng_mh.uniform()) < lp_star - lp:
+            beta, lp = beta_star, lp_star
+            accept  += 1
+        draws[t] = beta
+    return draws, accept / n_iter
+```
+
+**Step-size tuning.** We want an acceptance rate of roughly 25–40%; too low means proposals are rejected almost always (the chain gets stuck), too high means steps are tiny and the chain explores slowly.
+
+```{python}
+# Pilot runs to tune the step size
+print("Acceptance rates by step size (2,000 pilot iterations each):")
+for step in [0.05, 0.06, 0.07, 0.08, 0.10]:
+    _, ar = mh_sampler(beta_mle9, 2_000, step, seed=99)
+    flag = " ← chosen" if step == 0.07 else ""
+    print(f"  step = {step:.2f}   acceptance rate = {ar:.1%}{flag}")
+```
+
+```{python}
+# Full chain: 20,000 iterations starting from the MLE
+chosen_step        = 0.07
+draws_all, ar_full = mh_sampler(beta_mle9, 20_000, chosen_step, seed=42)
+print(f"Full chain acceptance rate: {ar_full:.1%}")
+
+# Burn-in: discard first 25%
+burn        = 5_000
+post_draws  = draws_all[burn:]                          # (15000, 9)
+post_full   = np.c_[np.zeros(len(post_draws)), post_draws]  # prepend beta_1=0 → (15000,10)
+print(f"Post-burn-in draws: {len(post_draws):,}")
+```
+
+```{python}
+# Trace plots — look for the "fuzzy caterpillar" pattern
+param_idx = [(0, 'SQL  (β₂)'),
+             (3, 'Business Analytics  (β₅)'),
+             (8, 'BI Systems  (β₁₀)')]
+
+fig, axes = plt.subplots(3, 1, figsize=(10, 5), sharex=True)
+for ax, (k, name) in zip(axes, param_idx):
+    ax.plot(post_draws[:, k], color='#1976D2', alpha=0.55, linewidth=0.35)
+    pm = post_draws[:, k].mean()
+    ax.axhline(pm, color='#D32F2F', linewidth=1.2, linestyle='--',
+               label=f'posterior mean = {pm:.3f}')
+    ax.set_ylabel(name, fontsize=9)
+    ax.legend(fontsize=8, loc='upper right')
+axes[-1].set_xlabel('Post-burn-in iteration', fontsize=10)
+fig.suptitle(f'MCMC Trace Plots  (step = {chosen_step}, acceptance = {ar_full:.1%})',
+             fontsize=12)
+plt.tight_layout()
+plt.show()
+```
+
+The chains show the classic "fuzzy caterpillar" pattern — rapid oscillation around a stable mean with no visible drift — confirming good mixing and convergence after burn-in.
+
+```{python}
+# Posterior summaries
+post_mean = post_full.mean(axis=0)
+post_lo   = np.percentile(post_full, 2.5,  axis=0)
+post_hi   = np.percentile(post_full, 97.5, axis=0)
+
+# Posterior shares of preference (push every draw through softmax, then average)
+exp_draws   = np.exp(post_full)
+share_draws = exp_draws / exp_draws.sum(axis=1, keepdims=True)
+shares_bayes  = share_draws.mean(axis=0)
+shares_bci_lo = np.percentile(share_draws, 2.5,  axis=0)
+shares_bci_hi = np.percentile(share_draws, 97.5, axis=0)
+
+# Build results dataframe
+bayes_df = pd.DataFrame({
+    'item':     np.arange(1, 11),
+    'label':    [short_labels[i] for i in range(1, 11)],
+    'post_mean': post_mean,
+    'ci_lo':    post_lo,
+    'ci_hi':    post_hi,
+    'share':    shares_bayes,
+    'share_lo': shares_bci_lo,
+    'share_hi': shares_bci_hi,
+})
+bayes_df = bayes_df.sort_values('share', ascending=False).reset_index(drop=True)
+
+tbl = bayes_df.copy()
+tbl['CI'] = '[' + tbl['ci_lo'].map('{:+.3f}'.format) + ', ' + tbl['ci_hi'].map('{:+.3f}'.format) + ']'
+tbl['post_mean'] = tbl['post_mean'].map('{:+.3f}'.format)
+tbl['share']     = tbl['share'].map('{:.4f}'.format)
+tbl_display = tbl[['item', 'label', 'post_mean', 'CI', 'share']].rename(
+    columns={'item': 'Item', 'label': 'Label',
+             'post_mean': 'Post. Mean β', 'CI': '95% Cred. Int.', 'share': 'Post. Share'})
+display(style_table(tbl_display, 'Table 3 — Bayesian MNL: Posterior Means, 95% Credible Intervals, and Shares')
+    .set_properties(subset=['Label'], **{'text-align': 'left'})
+    .set_properties(subset=['95% Cred. Int.'], **{'text-align': 'center'}))
+```
+
+```{python}
+# Bayesian bar chart with 95% credible intervals on shares
+fig, ax = plt.subplots(figsize=(9, 4))
+y_pos = range(len(bayes_df))
+xerr  = [bayes_df['share'].values - bayes_df['share_lo'].values,
+         bayes_df['share_hi'].values - bayes_df['share'].values]
+ax.barh(y_pos, bayes_df['share'], xerr=xerr, color='#2E7D32', alpha=0.75,
+        ecolor='#333', capsize=4, height=0.62)
+ax.set_yticks(y_pos)
+ax.set_yticklabels(bayes_df['label'], fontsize=10)
+ax.set_xlabel('Posterior Mean Share of Preference', fontsize=11)
+ax.set_title('MNL via Bayesian MCMC: Posterior Mean Shares\n'
+             '(with 95% Credible Intervals)', fontsize=12)
+ax.axvline(0.1, color='gray', linestyle='--', alpha=0.45, linewidth=0.9)
+ax.text(0.101, -0.8, '10% (equal share)', color='gray', fontsize=8)
+ax.invert_yaxis()
+plt.tight_layout()
+plt.show()
+```
+
+**MLE vs. Bayes.** Posterior means and MLE point estimates are nearly identical — the weakly informative prior barely moves the estimates when 680 tasks are available. Posterior standard deviations are close to MLE standard errors, as expected. The key advantage is that credible intervals on derived quantities like shares of preference fall out directly from the MCMC draws, with no delta-method algebra.
+
+## Comparing the Three Methods
+
+```{python}
+# Merge all three results on item
+mle_ranked   = mle_df.sort_values('share', ascending=False).reset_index(drop=True)
+mle_ranked['mle_rank'] = range(1, 11)
+
+counts_ranked = item_stats.sort_values('score', ascending=False).reset_index(drop=True)
+counts_ranked['counts_rank'] = range(1, 11)
+
+bayes_ranked = bayes_df.sort_values('share', ascending=False).reset_index(drop=True)
+bayes_ranked['bayes_rank'] = range(1, 11)
+
+comp = (mle_ranked[['item', 'label', 'share', 'mle_rank']]
+        .merge(counts_ranked[['item', 'score', 'counts_rank']], on='item')
+        .merge(bayes_ranked[['item', 'share', 'bayes_rank']]
+               .rename(columns={'share': 'bayes_share'}), on='item')
+        .sort_values('mle_rank')
+        .reset_index(drop=True))
+
+tbl = comp.copy()
+tbl['score']      = tbl['score'].map('{:+.3f}'.format)
+tbl['share']      = tbl['share'].map('{:.4f}'.format)
+tbl['bayes_share']= tbl['bayes_share'].map('{:.4f}'.format)
+tbl_display = tbl[['label', 'score', 'counts_rank', 'share', 'mle_rank',
+                    'bayes_share', 'bayes_rank']].rename(columns={
+    'label': 'Class', 'score': 'Counts Score', 'counts_rank': 'Counts Rank',
+    'share': 'MLE Share', 'mle_rank': 'MLE Rank',
+    'bayes_share': 'Bayes Share', 'bayes_rank': 'Bayes Rank'
+})
+display(style_table(tbl_display,
+    'Table 4 — Method Comparison: Counts, MLE, and Bayesian Estimates (sorted by MLE rank)')
+    .set_properties(subset=['Class'], **{'text-align': 'left'}))
+```
+
+```{python}
+#| echo: false
+mle_order = comp['item'].values   # comp is already sorted by mle_rank
+```
+
+::: {.panel-tabset}
+
+## Counts Score
+
+```{python}
+_d = item_stats.set_index('item').reindex(mle_order).reset_index()
+fig, ax = plt.subplots(figsize=(9, 4))
+ax.barh(range(10), _d['score'], color='#1565C0', alpha=0.75, height=0.65)
+ax.set_yticks(range(10))
+ax.set_yticklabels([short_labels[i] for i in mle_order], fontsize=10)
+ax.axvline(0, color='black', linewidth=0.9, linestyle='--', alpha=0.5)
+ax.set_xlabel('Score  (% Best − % Worst)', fontsize=11)
+ax.set_title('Counts Score  (items sorted by MLE rank)', fontsize=12)
+ax.invert_yaxis()
+plt.tight_layout()
+plt.show()
+```
+
+## MLE Share
+
+```{python}
+_d = mle_df.set_index('item').reindex(mle_order).reset_index()
+fig, ax = plt.subplots(figsize=(9, 4))
+ax.barh(range(10), _d['share'], color='#E64A19', alpha=0.78, height=0.65)
+ax.set_yticks(range(10))
+ax.set_yticklabels([short_labels[i] for i in mle_order], fontsize=10)
+ax.axvline(0.1, color='gray', linestyle='--', alpha=0.45, linewidth=0.9)
+ax.set_xlabel('Share of Preference', fontsize=11)
+ax.set_title('MLE Share of Preference  (items sorted by MLE rank)', fontsize=12)
+ax.invert_yaxis()
+plt.tight_layout()
+plt.show()
+```
+
+## Bayesian Share
+
+```{python}
+_d = comp.set_index('item').reindex(mle_order).reset_index()
+fig, ax = plt.subplots(figsize=(9, 4))
+ax.barh(range(10), _d['bayes_share'], color='#2E7D32', alpha=0.75, height=0.65)
+ax.set_yticks(range(10))
+ax.set_yticklabels([short_labels[i] for i in mle_order], fontsize=10)
+ax.axvline(0.1, color='gray', linestyle='--', alpha=0.45, linewidth=0.9)
+ax.set_xlabel('Posterior Mean Share of Preference', fontsize=11)
+ax.set_title('Bayesian Posterior Share  (items sorted by MLE rank)', fontsize=12)
+ax.invert_yaxis()
+plt.tight_layout()
+plt.show()
+```
+
+:::
+
+
+**Where they agree.** All three methods agree perfectly at the top and bottom: Marketing Analytics is the clear winner; Analytics Consulting sits firmly last, followed by Mkt/Fin/Ops and AI Math & Prog. The top-3 and bottom-3 courses are stable across all methods.
+
+**Where they disagree.** Ranks 4–7 (Large Data, Customer Analytics, SQL, Capstone) shuffle modestly between methods. Counts analysis and MNL diverge most here: the MNL reweights evidence by what competitors were on the same screen, which can reverse adjacent ranks when items have nearly equal utilities.
+
+**What MNL adds over counts.** The choice model extracts information from *every* item on a screen, not just the one picked. If a mediocre course consistently appeared alongside weak competitors, its counts score would look inflated. The MNL adjusts for the choice context and produces statistically more efficient estimates — especially in the dense middle of the ranking.
+
+**What Bayes adds over MLE.** Full posterior distributions on all quantities. The credible intervals on shares of preference shown above required no delta-method computation — just pushing each MCMC draw through the softmax and taking quantiles. Bayes also extends naturally to hierarchical models that estimate *individual-level* $\beta_i$ vectors, revealing preference heterogeneity across students.
+
+## Discussion
+
+**Substantive finding.** MSBA students strongly prefer **Marketing Analytics** (MGTA 495) — it earns nearly three times its "equal-share" allocation and is the only course approaching a counts score of +0.5 (actual: +0.493). **Business Analytics** (MGTA 453) and **Customer Analytics** (MGTA 455) round out the top tier, reflecting an appreciation for applied, data-driven coursework with clear career relevance. At the bottom, **Analytics Consulting** (MGTA 444) ranks last in every method, followed by **Mkt/Fin/Ops** and **AI Math & Prog.**, perhaps because students perceive these as less specialized or less directly applicable to their target roles.
+
+**Methodological lessons.**
+
+- *Counts*: transparent and fast. Ideal for an executive dashboard or an early-stage sanity check. It ignores the choice context and conveys no formal uncertainty.
+- *MLE MNL*: statistically rigorous point estimates with classical standard errors. The right tool when you need a single defensible number with a confidence interval.
+- *Bayesian MNL*: full posteriors on any derived quantity. Particularly valuable when (a) uncertainty on shares of preference matters, (b) you want to propagate uncertainty into market simulations ("what if we added a new elective?"), or (c) you plan to extend the model to a hierarchical structure that captures individual-level heterogeneity.
+
+**Caveats.** The sample is self-selected MSBA students at UCSD Rady — preferences reflect this specific cohort's background, career aspirations, and program experiences and need not generalize. Prior coursework, current program term, the instructor teaching the course, and even item presentation order may all influence responses.
+
+**Next steps.** The natural extension is a hierarchical (mixed) MNL that estimates a distribution over individual-level $\boldsymbol\beta_i$ vectors, revealing which student subgroups prefer which courses. This would let program advisors tailor recommendations by track, cohort, or stated career goal — and help the curriculum team identify which courses have niche versus broad appeal.
