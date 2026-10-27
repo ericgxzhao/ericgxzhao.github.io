@@ -13,7 +13,7 @@ about:
       href: https://github.com/ericgxzhao
     - icon: envelope
       text: Email
-      href: mailto:g1zhao@ucsd.edu
+      href: mailto:guanxiang0621@gmail.com
 ---
 
 I'm Eric Zhao, a Master of Science in Business Analytics student at UC San Diego with a background in business economics. My experience spans analytics, strategy, and operations across industries, with previous exposure to organizations such as Mercedes-Benz and McKinsey. I'm especially interested in using data to solve practical business problems in areas like customer analytics, marketing, and supply chain decision-making.
