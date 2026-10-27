@@ -1,52 +1,9 @@
 # ericgxzhao.github.io
 
-Personal website and blog of Guanxiang (Eric) Zhao, built with [Quarto](https://quarto.org) and published at <https://ericgxzhao.github.io/>.
+Source for the personal website and blog of Guanxiang (Eric) Zhao: **<https://ericgxzhao.github.io/>**
 
-## How publishing works
+The blog covers applied analytics work such as A/B testing, causal inference, Poisson regression, key drivers analysis and MaxDiff, with the Python code behind each post.
 
-Every push to `main` runs [`.github/workflows/publish.yml`](.github/workflows/publish.yml), which renders the site and deploys it to GitHub Pages. The build does not run any Python: it reuses the code results saved in `_freeze/`. Those results are only updated when a page is rendered locally, so they must be committed along with any change to a page that has code.
+Built with [Quarto](https://quarto.org) and deployed to GitHub Pages with GitHub Actions.
 
-## Setup on a new machine
-
-Requires Git, [Quarto](https://quarto.org/docs/get-started/) 1.10+, and Python 3.14.
-
-```sh
-git clone https://github.com/ericgxzhao/ericgxzhao.github.io.git
-cd ericgxzhao.github.io
-
-# Python environment for the posts' code
-python -m venv .venv
-.venv/Scripts/python -m pip install -r requirements.txt   # macOS/Linux: .venv/bin/python
-
-# Tell Quarto to use it (this file is git-ignored)
-# Windows PowerShell:
-Set-Content _environment.local "QUARTO_PYTHON=.venv/Scripts/python.exe" -Encoding ascii
-# macOS/Linux:
-echo "QUARTO_PYTHON=.venv/bin/python" > _environment.local
-
-# Enable the pre-commit check
-git config core.hooksPath .githooks
-```
-
-## Everyday workflow
-
-```sh
-git pull
-quarto preview          # live preview while editing
-```
-
-- **Page without code** (About, Resume, styling): edit, commit, push.
-- **Page with code** (most blog posts), including prose-only edits: run `quarto render <file>`, then commit the page together with the updated `_freeze/`.
-
-The pre-commit hook blocks a commit whose saved results are out of date and prints the exact command to run.
-
-## Layout
-
-| Path | Contents |
-|---|---|
-| `index.qmd`, `resume.qmd`, `about.qmd` | Top-level pages |
-| `blog/posts/<slug>/index.qmd` | Blog posts |
-| `hw/` | Course assignments and the data some posts read |
-| `files/` | Profile photo, resume PDF, images |
-| `_freeze/` | Saved code results (commit these) |
-| `_site/` | Local build output (git-ignored) |
+Setup and publishing notes: [.github/DEVELOPMENT.md](.github/DEVELOPMENT.md)
