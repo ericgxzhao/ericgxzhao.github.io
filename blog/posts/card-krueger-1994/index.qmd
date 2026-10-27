@@ -29,7 +29,7 @@ columns = [
     'PSODA2', 'PFRY2', 'PENTREE2', 'NREGS2', 'NREGS112'
 ]
 
-df = pd.read_csv('../../../hw/hw2/data/njmin/public.dat', sep=r'\s+', header=None,
+df = pd.read_csv('data/public.dat', sep=r'\s+', header=None,
                  names=columns, na_values='.')
 
 df['NJ']      = df['STATE']

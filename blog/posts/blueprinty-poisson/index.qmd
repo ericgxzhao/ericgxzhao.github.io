@@ -20,7 +20,7 @@ from scipy.stats import norm
 import statsmodels.api as sm
 from IPython.display import display
 
-df = pd.read_csv('../../../hw/hw3/data/blueprinty.csv')
+df = pd.read_csv('data/blueprinty.csv')
 Y = df['patents'].values
 
 BG    = '#1a1a2e'

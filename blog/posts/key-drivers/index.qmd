@@ -39,7 +39,7 @@ from math import factorial
 from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 
-df = pd.read_csv("../../../hw/hw5/data/data_for_drivers_analysis.csv")
+df = pd.read_csv("data/data_for_drivers_analysis.csv")
 
 y = df["satisfaction"].values
 predictors = ["trust", "build", "differs", "easy", "appealing",

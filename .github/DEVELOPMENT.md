@@ -44,7 +44,7 @@ The pre-commit hook blocks a commit whose saved results are out of date and prin
 |---|---|
 | `index.qmd`, `resume.qmd`, `about.qmd` | Top-level pages |
 | `blog/posts/<slug>/index.qmd` | Blog posts |
-| `hw/` | Course assignments and the data some posts read |
+| `blog/posts/<slug>/data/` | Data a post reads, kept next to the post |
 | `files/` | Profile photo, resume PDF, images |
 | `_freeze/` | Saved code results (commit these) |
 | `_site/` | Local build output (git-ignored) |
