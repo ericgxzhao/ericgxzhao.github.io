@@ -2,19 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.13">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Eric Zhao">
-<meta name="dcterms.date" content="2026-04-22">
+<meta name="dcterms.date" content="2026-10-27">
 
-<title>Replication of Card and Krueger (1994) – Eric Zhao’s Website</title>
+<title>Replication of Card and Krueger (1994) – Eric Zhao</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -69,15 +75,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-28756a26ae97ef16d13ddebe2ffefc5c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-c70ae112d27b0643d94f3d9fd17c8844.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-0a1b285f7531e058031a821c381133c7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-3c3c664e7ea3a40ba7918d802a6e8996.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -110,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -150,7 +155,7 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Eric Zhao’s Website</span>
+    <span class="navbar-title">Eric Zhao</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -221,7 +226,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">April 22, 2026</p>
+      <p class="date">October 27, 2026</p>
     </div>
   </div>
   
@@ -248,7 +253,7 @@ window.Quarto = {
 <section id="table-2-descriptive-statistics" class="level3">
 <h3 class="anchored" data-anchor-id="table-2-descriptive-statistics">Table 2: Descriptive Statistics</h3>
 <p>The table below reproduces selected rows of Table 2 from Card and Krueger (1994), showing mean restaurant characteristics separately for Pennsylvania (control) and New Jersey (treatment) stores in both survey waves.</p>
-<div id="9bb265bc" class="cell" data-execution_count="2">
+<div id="1208d63c" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pa <span class="op">=</span> df[df[<span class="st">'NJ'</span>] <span class="op">==</span> <span class="dv">0</span>]</span>
@@ -297,29 +302,29 @@ window.Quarto = {
 </details>
 <div class="cell-output cell-output-display">
 <style type="text/css">
-#T_903e4 caption {
+#T_cb2f0 caption {
   font-weight: bold;
   font-size: 1.05em;
 }
-#T_903e4 th {
+#T_cb2f0 th {
   text-align: left;
 }
 </style>
 
-<div id="T_903e4" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<div id="T_cb2f0" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_903e4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_cb2f0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Table 2: Means of Key Variables by State
 </figcaption>
-<div aria-describedby="T_903e4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_903e4" class="caption-top table table-sm table-striped small">
+<div aria-describedby="T_cb2f0-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="T_cb2f0" class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
-<th id="T_903e4_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">PA mean</th>
-<th id="T_903e4_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">PA (SE)</th>
-<th id="T_903e4_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">NJ mean</th>
-<th id="T_903e4_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">NJ (SE)</th>
+<th id="T_cb2f0_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">PA mean</th>
+<th id="T_cb2f0_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">PA (SE)</th>
+<th id="T_cb2f0_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">NJ mean</th>
+<th id="T_cb2f0_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">NJ (SE)</th>
 </tr>
 <tr class="even">
 <th class="index_name level0" data-quarto-table-cell-role="th">Variable</th>
@@ -331,130 +336,130 @@ Table&nbsp;1: Table 2: Means of Key Variables by State
 </thead>
 <tbody>
 <tr class="odd">
-<th id="T_903e4_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Burger King (fraction)</th>
-<td id="T_903e4_row0_col0" class="data row0 col0">0.443</td>
-<td id="T_903e4_row0_col1" class="data row0 col1">(0.056)</td>
-<td id="T_903e4_row0_col2" class="data row0 col2">0.411</td>
-<td id="T_903e4_row0_col3" class="data row0 col3">(0.027)</td>
+<th id="T_cb2f0_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">Burger King (fraction)</th>
+<td id="T_cb2f0_row0_col0" class="data row0 col0">0.443</td>
+<td id="T_cb2f0_row0_col1" class="data row0 col1">(0.056)</td>
+<td id="T_cb2f0_row0_col2" class="data row0 col2">0.411</td>
+<td id="T_cb2f0_row0_col3" class="data row0 col3">(0.027)</td>
 </tr>
 <tr class="even">
-<th id="T_903e4_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">KFC (fraction)</th>
-<td id="T_903e4_row1_col0" class="data row1 col0">0.152</td>
-<td id="T_903e4_row1_col1" class="data row1 col1">(0.041)</td>
-<td id="T_903e4_row1_col2" class="data row1 col2">0.205</td>
-<td id="T_903e4_row1_col3" class="data row1 col3">(0.022)</td>
+<th id="T_cb2f0_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">KFC (fraction)</th>
+<td id="T_cb2f0_row1_col0" class="data row1 col0">0.152</td>
+<td id="T_cb2f0_row1_col1" class="data row1 col1">(0.041)</td>
+<td id="T_cb2f0_row1_col2" class="data row1 col2">0.205</td>
+<td id="T_cb2f0_row1_col3" class="data row1 col3">(0.022)</td>
 </tr>
 <tr class="odd">
-<th id="T_903e4_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">Roy Rogers (fraction)</th>
-<td id="T_903e4_row2_col0" class="data row2 col0">0.215</td>
-<td id="T_903e4_row2_col1" class="data row2 col1">(0.047)</td>
-<td id="T_903e4_row2_col2" class="data row2 col2">0.248</td>
-<td id="T_903e4_row2_col3" class="data row2 col3">(0.024)</td>
+<th id="T_cb2f0_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">Roy Rogers (fraction)</th>
+<td id="T_cb2f0_row2_col0" class="data row2 col0">0.215</td>
+<td id="T_cb2f0_row2_col1" class="data row2 col1">(0.047)</td>
+<td id="T_cb2f0_row2_col2" class="data row2 col2">0.248</td>
+<td id="T_cb2f0_row2_col3" class="data row2 col3">(0.024)</td>
 </tr>
 <tr class="even">
-<th id="T_903e4_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">Wendy's (fraction)</th>
-<td id="T_903e4_row3_col0" class="data row3 col0">0.190</td>
-<td id="T_903e4_row3_col1" class="data row3 col1">(0.044)</td>
-<td id="T_903e4_row3_col2" class="data row3 col2">0.136</td>
-<td id="T_903e4_row3_col3" class="data row3 col3">(0.019)</td>
+<th id="T_cb2f0_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">Wendy's (fraction)</th>
+<td id="T_cb2f0_row3_col0" class="data row3 col0">0.190</td>
+<td id="T_cb2f0_row3_col1" class="data row3 col1">(0.044)</td>
+<td id="T_cb2f0_row3_col2" class="data row3 col2">0.136</td>
+<td id="T_cb2f0_row3_col3" class="data row3 col3">(0.019)</td>
 </tr>
 <tr class="odd">
-<th id="T_903e4_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">Company-owned (fraction)</th>
-<td id="T_903e4_row4_col0" class="data row4 col0">0.354</td>
-<td id="T_903e4_row4_col1" class="data row4 col1">(0.054)</td>
-<td id="T_903e4_row4_col2" class="data row4 col2">0.341</td>
-<td id="T_903e4_row4_col3" class="data row4 col3">(0.026)</td>
+<th id="T_cb2f0_level0_row4" class="row_heading level0 row4" data-quarto-table-cell-role="th">Company-owned (fraction)</th>
+<td id="T_cb2f0_row4_col0" class="data row4 col0">0.354</td>
+<td id="T_cb2f0_row4_col1" class="data row4 col1">(0.054)</td>
+<td id="T_cb2f0_row4_col2" class="data row4 col2">0.341</td>
+<td id="T_cb2f0_row4_col3" class="data row4 col3">(0.026)</td>
 </tr>
 <tr class="even">
-<th id="T_903e4_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">FTE employment, wave 1</th>
-<td id="T_903e4_row5_col0" class="data row5 col0">23.331</td>
-<td id="T_903e4_row5_col1" class="data row5 col1">(1.351)</td>
-<td id="T_903e4_row5_col2" class="data row5 col2">20.439</td>
-<td id="T_903e4_row5_col3" class="data row5 col3">(0.508)</td>
+<th id="T_cb2f0_level0_row5" class="row_heading level0 row5" data-quarto-table-cell-role="th">FTE employment, wave 1</th>
+<td id="T_cb2f0_row5_col0" class="data row5 col0">23.331</td>
+<td id="T_cb2f0_row5_col1" class="data row5 col1">(1.351)</td>
+<td id="T_cb2f0_row5_col2" class="data row5 col2">20.439</td>
+<td id="T_cb2f0_row5_col3" class="data row5 col3">(0.508)</td>
 </tr>
 <tr class="odd">
-<th id="T_903e4_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">FTE employment, wave 2</th>
-<td id="T_903e4_row6_col0" class="data row6 col0">21.166</td>
-<td id="T_903e4_row6_col1" class="data row6 col1">(0.943)</td>
-<td id="T_903e4_row6_col2" class="data row6 col2">21.027</td>
-<td id="T_903e4_row6_col3" class="data row6 col3">(0.520)</td>
+<th id="T_cb2f0_level0_row6" class="row_heading level0 row6" data-quarto-table-cell-role="th">FTE employment, wave 2</th>
+<td id="T_cb2f0_row6_col0" class="data row6 col0">21.166</td>
+<td id="T_cb2f0_row6_col1" class="data row6 col1">(0.943)</td>
+<td id="T_cb2f0_row6_col2" class="data row6 col2">21.027</td>
+<td id="T_cb2f0_row6_col3" class="data row6 col3">(0.520)</td>
 </tr>
 <tr class="even">
-<th id="T_903e4_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">Fraction full-time, wave 1</th>
-<td id="T_903e4_row7_col0" class="data row7 col0">0.350</td>
-<td id="T_903e4_row7_col1" class="data row7 col1">(0.027)</td>
-<td id="T_903e4_row7_col2" class="data row7 col2">0.328</td>
-<td id="T_903e4_row7_col3" class="data row7 col3">(0.013)</td>
+<th id="T_cb2f0_level0_row7" class="row_heading level0 row7" data-quarto-table-cell-role="th">Fraction full-time, wave 1</th>
+<td id="T_cb2f0_row7_col0" class="data row7 col0">0.350</td>
+<td id="T_cb2f0_row7_col1" class="data row7 col1">(0.027)</td>
+<td id="T_cb2f0_row7_col2" class="data row7 col2">0.328</td>
+<td id="T_cb2f0_row7_col3" class="data row7 col3">(0.013)</td>
 </tr>
 <tr class="odd">
-<th id="T_903e4_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">Fraction full-time, wave 2</th>
-<td id="T_903e4_row8_col0" class="data row8 col0">0.304</td>
-<td id="T_903e4_row8_col1" class="data row8 col1">(0.028)</td>
-<td id="T_903e4_row8_col2" class="data row8 col2">0.359</td>
-<td id="T_903e4_row8_col3" class="data row8 col3">(0.014)</td>
+<th id="T_cb2f0_level0_row8" class="row_heading level0 row8" data-quarto-table-cell-role="th">Fraction full-time, wave 2</th>
+<td id="T_cb2f0_row8_col0" class="data row8 col0">0.304</td>
+<td id="T_cb2f0_row8_col1" class="data row8 col1">(0.028)</td>
+<td id="T_cb2f0_row8_col2" class="data row8 col2">0.359</td>
+<td id="T_cb2f0_row8_col3" class="data row8 col3">(0.014)</td>
 </tr>
 <tr class="even">
-<th id="T_903e4_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">Starting wage, wave 1</th>
-<td id="T_903e4_row9_col0" class="data row9 col0">4.630</td>
-<td id="T_903e4_row9_col1" class="data row9 col1">(0.040)</td>
-<td id="T_903e4_row9_col2" class="data row9 col2">4.612</td>
-<td id="T_903e4_row9_col3" class="data row9 col3">(0.020)</td>
+<th id="T_cb2f0_level0_row9" class="row_heading level0 row9" data-quarto-table-cell-role="th">Starting wage, wave 1</th>
+<td id="T_cb2f0_row9_col0" class="data row9 col0">4.630</td>
+<td id="T_cb2f0_row9_col1" class="data row9 col1">(0.040)</td>
+<td id="T_cb2f0_row9_col2" class="data row9 col2">4.612</td>
+<td id="T_cb2f0_row9_col3" class="data row9 col3">(0.020)</td>
 </tr>
 <tr class="odd">
-<th id="T_903e4_level0_row10" class="row_heading level0 row10" data-quarto-table-cell-role="th">Starting wage, wave 2</th>
-<td id="T_903e4_row10_col0" class="data row10 col0">4.617</td>
-<td id="T_903e4_row10_col1" class="data row10 col1">(0.042)</td>
-<td id="T_903e4_row10_col2" class="data row10 col2">5.081</td>
-<td id="T_903e4_row10_col3" class="data row10 col3">(0.006)</td>
+<th id="T_cb2f0_level0_row10" class="row_heading level0 row10" data-quarto-table-cell-role="th">Starting wage, wave 2</th>
+<td id="T_cb2f0_row10_col0" class="data row10 col0">4.617</td>
+<td id="T_cb2f0_row10_col1" class="data row10 col1">(0.042)</td>
+<td id="T_cb2f0_row10_col2" class="data row10 col2">5.081</td>
+<td id="T_cb2f0_row10_col3" class="data row10 col3">(0.006)</td>
 </tr>
 <tr class="even">
-<th id="T_903e4_level0_row11" class="row_heading level0 row11" data-quarto-table-cell-role="th">% stores at $4.25, wave 1</th>
-<td id="T_903e4_row11_col0" class="data row11 col0">0.329</td>
-<td id="T_903e4_row11_col1" class="data row11 col1">(0.053)</td>
-<td id="T_903e4_row11_col2" class="data row11 col2">0.305</td>
-<td id="T_903e4_row11_col3" class="data row11 col3">(0.025)</td>
+<th id="T_cb2f0_level0_row11" class="row_heading level0 row11" data-quarto-table-cell-role="th">% stores at $4.25, wave 1</th>
+<td id="T_cb2f0_row11_col0" class="data row11 col0">0.329</td>
+<td id="T_cb2f0_row11_col1" class="data row11 col1">(0.053)</td>
+<td id="T_cb2f0_row11_col2" class="data row11 col2">0.305</td>
+<td id="T_cb2f0_row11_col3" class="data row11 col3">(0.025)</td>
 </tr>
 <tr class="odd">
-<th id="T_903e4_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th">% stores at $5.05, wave 2</th>
-<td id="T_903e4_row12_col0" class="data row12 col0">0.013</td>
-<td id="T_903e4_row12_col1" class="data row12 col1">(0.013)</td>
-<td id="T_903e4_row12_col2" class="data row12 col2">0.855</td>
-<td id="T_903e4_row12_col3" class="data row12 col3">(0.019)</td>
+<th id="T_cb2f0_level0_row12" class="row_heading level0 row12" data-quarto-table-cell-role="th">% stores at $5.05, wave 2</th>
+<td id="T_cb2f0_row12_col0" class="data row12 col0">0.013</td>
+<td id="T_cb2f0_row12_col1" class="data row12 col1">(0.013)</td>
+<td id="T_cb2f0_row12_col2" class="data row12 col2">0.855</td>
+<td id="T_cb2f0_row12_col3" class="data row12 col3">(0.019)</td>
 </tr>
 <tr class="even">
-<th id="T_903e4_level0_row13" class="row_heading level0 row13" data-quarto-table-cell-role="th">Price of full meal, wave 1</th>
-<td id="T_903e4_row13_col0" class="data row13 col0">3.042</td>
-<td id="T_903e4_row13_col1" class="data row13 col1">(0.069)</td>
-<td id="T_903e4_row13_col2" class="data row13 col2">3.351</td>
-<td id="T_903e4_row13_col3" class="data row13 col3">(0.037)</td>
+<th id="T_cb2f0_level0_row13" class="row_heading level0 row13" data-quarto-table-cell-role="th">Price of full meal, wave 1</th>
+<td id="T_cb2f0_row13_col0" class="data row13 col0">3.042</td>
+<td id="T_cb2f0_row13_col1" class="data row13 col1">(0.069)</td>
+<td id="T_cb2f0_row13_col2" class="data row13 col2">3.351</td>
+<td id="T_cb2f0_row13_col3" class="data row13 col3">(0.037)</td>
 </tr>
 <tr class="odd">
-<th id="T_903e4_level0_row14" class="row_heading level0 row14" data-quarto-table-cell-role="th">Price of full meal, wave 2</th>
-<td id="T_903e4_row14_col0" class="data row14 col0">3.027</td>
-<td id="T_903e4_row14_col1" class="data row14 col1">(0.067)</td>
-<td id="T_903e4_row14_col2" class="data row14 col2">3.415</td>
-<td id="T_903e4_row14_col3" class="data row14 col3">(0.036)</td>
+<th id="T_cb2f0_level0_row14" class="row_heading level0 row14" data-quarto-table-cell-role="th">Price of full meal, wave 2</th>
+<td id="T_cb2f0_row14_col0" class="data row14 col0">3.027</td>
+<td id="T_cb2f0_row14_col1" class="data row14 col1">(0.067)</td>
+<td id="T_cb2f0_row14_col2" class="data row14 col2">3.415</td>
+<td id="T_cb2f0_row14_col3" class="data row14 col3">(0.036)</td>
 </tr>
 <tr class="even">
-<th id="T_903e4_level0_row15" class="row_heading level0 row15" data-quarto-table-cell-role="th">Hours open per day, wave 1</th>
-<td id="T_903e4_row15_col0" class="data row15 col0">14.525</td>
-<td id="T_903e4_row15_col1" class="data row15 col1">(0.332)</td>
-<td id="T_903e4_row15_col2" class="data row15 col2">14.418</td>
-<td id="T_903e4_row15_col3" class="data row15 col3">(0.153)</td>
+<th id="T_cb2f0_level0_row15" class="row_heading level0 row15" data-quarto-table-cell-role="th">Hours open per day, wave 1</th>
+<td id="T_cb2f0_row15_col0" class="data row15 col0">14.525</td>
+<td id="T_cb2f0_row15_col1" class="data row15 col1">(0.332)</td>
+<td id="T_cb2f0_row15_col2" class="data row15 col2">14.418</td>
+<td id="T_cb2f0_row15_col3" class="data row15 col3">(0.153)</td>
 </tr>
 <tr class="odd">
-<th id="T_903e4_level0_row16" class="row_heading level0 row16" data-quarto-table-cell-role="th">Hours open per day, wave 2</th>
-<td id="T_903e4_row16_col0" class="data row16 col0">14.654</td>
-<td id="T_903e4_row16_col1" class="data row16 col1">(0.327)</td>
-<td id="T_903e4_row16_col2" class="data row16 col2">14.420</td>
-<td id="T_903e4_row16_col3" class="data row16 col3">(0.152)</td>
+<th id="T_cb2f0_level0_row16" class="row_heading level0 row16" data-quarto-table-cell-role="th">Hours open per day, wave 2</th>
+<td id="T_cb2f0_row16_col0" class="data row16 col0">14.654</td>
+<td id="T_cb2f0_row16_col1" class="data row16 col1">(0.327)</td>
+<td id="T_cb2f0_row16_col2" class="data row16 col2">14.420</td>
+<td id="T_cb2f0_row16_col3" class="data row16 col3">(0.152)</td>
 </tr>
 <tr class="even">
-<th id="T_903e4_level0_row17" class="row_heading level0 row17" data-quarto-table-cell-role="th">Bonus program, wave 1</th>
-<td id="T_903e4_row17_col0" class="data row17 col0">0.291</td>
-<td id="T_903e4_row17_col1" class="data row17 col1">(0.051)</td>
-<td id="T_903e4_row17_col2" class="data row17 col2">0.236</td>
-<td id="T_903e4_row17_col3" class="data row17 col3">(0.023)</td>
+<th id="T_cb2f0_level0_row17" class="row_heading level0 row17" data-quarto-table-cell-role="th">Bonus program, wave 1</th>
+<td id="T_cb2f0_row17_col0" class="data row17 col0">0.291</td>
+<td id="T_cb2f0_row17_col1" class="data row17 col1">(0.051)</td>
+<td id="T_cb2f0_row17_col2" class="data row17 col2">0.236</td>
+<td id="T_cb2f0_row17_col3" class="data row17 col3">(0.023)</td>
 </tr>
 </tbody>
 </table>
@@ -469,7 +474,7 @@ Table&nbsp;1: Table 2: Means of Key Variables by State
 <section id="table-3-employment-before-and-after-the-minimum-wage-increase" class="level3">
 <h3 class="anchored" data-anchor-id="table-3-employment-before-and-after-the-minimum-wage-increase">Table 3: Employment Before and After the Minimum Wage Increase</h3>
 <p>The next table replicates the core 3×3 block of Table 3 in Card and Krueger. Rows report average full-time-equivalent (FTE) employment—defined as full-time employees plus 0.5 × part-time employees plus managers—before and after the wage increase, and the change between waves. Columns split stores by state and by the initial wage level of NJ stores.</p>
-<div id="2ae69a51" class="cell" data-execution_count="3">
+<div id="01cf1809" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>groups <span class="op">=</span> {</span>
@@ -522,60 +527,60 @@ Table&nbsp;1: Table 2: Means of Key Variables by State
 </details>
 <div class="cell-output cell-output-display">
 <style type="text/css">
-#T_c53b8 caption {
+#T_5ba9c caption {
   font-weight: bold;
   font-size: 1.05em;
 }
-#T_c53b8 th {
+#T_5ba9c th {
   text-align: left;
 }
 </style>
 
-<div id="T_c53b8" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<div id="T_5ba9c" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_c53b8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_5ba9c-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;2: Table 3 (Columns 1–3, Rows 1–3): Average FTE Employment
 </figcaption>
-<div aria-describedby="T_c53b8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_c53b8" class="caption-top table table-sm table-striped small">
+<div aria-describedby="T_5ba9c-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="T_5ba9c" class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
-<th id="T_c53b8_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Pennsylvania</th>
-<th id="T_c53b8_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Pennsylvania (SE)</th>
-<th id="T_c53b8_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">New Jersey (all)</th>
-<th id="T_c53b8_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">New Jersey (all) (SE)</th>
-<th id="T_c53b8_level0_col4" class="col_heading level0 col4" data-quarto-table-cell-role="th">NJ — wage = $4.25</th>
-<th id="T_c53b8_level0_col5" class="col_heading level0 col5" data-quarto-table-cell-role="th">NJ — wage = $4.25 (SE)</th>
+<th id="T_5ba9c_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Pennsylvania</th>
+<th id="T_5ba9c_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Pennsylvania (SE)</th>
+<th id="T_5ba9c_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">New Jersey (all)</th>
+<th id="T_5ba9c_level0_col3" class="col_heading level0 col3" data-quarto-table-cell-role="th">New Jersey (all) (SE)</th>
+<th id="T_5ba9c_level0_col4" class="col_heading level0 col4" data-quarto-table-cell-role="th">NJ — wage = $4.25</th>
+<th id="T_5ba9c_level0_col5" class="col_heading level0 col5" data-quarto-table-cell-role="th">NJ — wage = $4.25 (SE)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<th id="T_c53b8_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">(i) FTE employment, wave 1</th>
-<td id="T_c53b8_row0_col0" class="data row0 col0">23.33</td>
-<td id="T_c53b8_row0_col1" class="data row0 col1">(1.35)</td>
-<td id="T_c53b8_row0_col2" class="data row0 col2">20.44</td>
-<td id="T_c53b8_row0_col3" class="data row0 col3">(0.51)</td>
-<td id="T_c53b8_row0_col4" class="data row0 col4">19.56</td>
-<td id="T_c53b8_row0_col5" class="data row0 col5">(0.77)</td>
+<th id="T_5ba9c_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">(i) FTE employment, wave 1</th>
+<td id="T_5ba9c_row0_col0" class="data row0 col0">23.33</td>
+<td id="T_5ba9c_row0_col1" class="data row0 col1">(1.35)</td>
+<td id="T_5ba9c_row0_col2" class="data row0 col2">20.44</td>
+<td id="T_5ba9c_row0_col3" class="data row0 col3">(0.51)</td>
+<td id="T_5ba9c_row0_col4" class="data row0 col4">19.56</td>
+<td id="T_5ba9c_row0_col5" class="data row0 col5">(0.77)</td>
 </tr>
 <tr class="even">
-<th id="T_c53b8_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">(ii) FTE employment, wave 2</th>
-<td id="T_c53b8_row1_col0" class="data row1 col0">21.17</td>
-<td id="T_c53b8_row1_col1" class="data row1 col1">(0.94)</td>
-<td id="T_c53b8_row1_col2" class="data row1 col2">21.03</td>
-<td id="T_c53b8_row1_col3" class="data row1 col3">(0.52)</td>
-<td id="T_c53b8_row1_col4" class="data row1 col4">20.88</td>
-<td id="T_c53b8_row1_col5" class="data row1 col5">(1.01)</td>
+<th id="T_5ba9c_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">(ii) FTE employment, wave 2</th>
+<td id="T_5ba9c_row1_col0" class="data row1 col0">21.17</td>
+<td id="T_5ba9c_row1_col1" class="data row1 col1">(0.94)</td>
+<td id="T_5ba9c_row1_col2" class="data row1 col2">21.03</td>
+<td id="T_5ba9c_row1_col3" class="data row1 col3">(0.52)</td>
+<td id="T_5ba9c_row1_col4" class="data row1 col4">20.88</td>
+<td id="T_5ba9c_row1_col5" class="data row1 col5">(1.01)</td>
 </tr>
 <tr class="odd">
-<th id="T_c53b8_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">(iii) Change in FTE</th>
-<td id="T_c53b8_row2_col0" class="data row2 col0">-2.17</td>
-<td id="T_c53b8_row2_col1" class="data row2 col1">(1.25)</td>
-<td id="T_c53b8_row2_col2" class="data row2 col2">0.59</td>
-<td id="T_c53b8_row2_col3" class="data row2 col3">(0.48)</td>
-<td id="T_c53b8_row2_col4" class="data row2 col4">1.32</td>
-<td id="T_c53b8_row2_col5" class="data row2 col5">(0.82)</td>
+<th id="T_5ba9c_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">(iii) Change in FTE</th>
+<td id="T_5ba9c_row2_col0" class="data row2 col0">-2.17</td>
+<td id="T_5ba9c_row2_col1" class="data row2 col1">(1.25)</td>
+<td id="T_5ba9c_row2_col2" class="data row2 col2">0.59</td>
+<td id="T_5ba9c_row2_col3" class="data row2 col3">(0.48)</td>
+<td id="T_5ba9c_row2_col4" class="data row2 col4">1.32</td>
+<td id="T_5ba9c_row2_col5" class="data row2 col5">(0.82)</td>
 </tr>
 </tbody>
 </table>
@@ -600,7 +605,7 @@ Table&nbsp;2: Table 3 (Columns 1–3, Rows 1–3): Average FTE Employment
 \]</span></p>
 <p>PA stores and NJ stores already paying ≥ $5.05 receive GAP = 0. A store paying $4.25 has GAP = (5.05 − 4.25)/4.25 ≈ 0.188. This variable allows a finer test: stores <em>more</em> exposed to the wage mandate should show <em>larger</em> employment responses.</p>
 <p>Table 4 column (i) regresses the change in FTE employment on GAP using a sample that includes stores with valid wage data in both waves plus any store that permanently closed:</p>
-<div id="a4d4d82d" class="cell" data-execution_count="4">
+<div id="9362d6a2" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sub <span class="op">=</span> df[</span>
@@ -634,54 +639,54 @@ Table&nbsp;2: Table 3 (Columns 1–3, Rows 1–3): Average FTE Employment
 </details>
 <div class="cell-output cell-output-display">
 <style type="text/css">
-#T_32e33 caption {
+#T_5f445 caption {
   font-weight: bold;
   font-size: 1.05em;
 }
-#T_32e33 th {
+#T_5f445 th {
   text-align: left;
 }
 </style>
 
-<div id="T_32e33" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
+<div id="T_5f445" class="quarto-float quarto-figure quarto-figure-center anchored" data-quarto-postprocess="true">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_32e33-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="T_5f445-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;3: Table 4, Column (i): OLS — Change in FTE Employment on GAP
 </figcaption>
-<div aria-describedby="T_32e33-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table id="T_32e33" class="caption-top table table-sm table-striped small">
+<div aria-describedby="T_5f445-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="T_5f445" class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th class="blank level0" data-quarto-table-cell-role="th">&nbsp;</th>
-<th id="T_32e33_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Coefficient</th>
-<th id="T_32e33_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Std. Error</th>
-<th id="T_32e33_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">t-statistic</th>
+<th id="T_5f445_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Coefficient</th>
+<th id="T_5f445_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Std. Error</th>
+<th id="T_5f445_level0_col2" class="col_heading level0 col2" data-quarto-table-cell-role="th">t-statistic</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<th id="T_32e33_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">GAP</th>
-<td id="T_32e33_row0_col0" class="data row0 col0">15.65</td>
-<td id="T_32e33_row0_col1" class="data row0 col1">(6.08)</td>
-<td id="T_32e33_row0_col2" class="data row0 col2">2.57</td>
+<th id="T_5f445_level0_row0" class="row_heading level0 row0" data-quarto-table-cell-role="th">GAP</th>
+<td id="T_5f445_row0_col0" class="data row0 col0">15.65</td>
+<td id="T_5f445_row0_col1" class="data row0 col1">(6.08)</td>
+<td id="T_5f445_row0_col2" class="data row0 col2">2.57</td>
 </tr>
 <tr class="even">
-<th id="T_32e33_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Intercept</th>
-<td id="T_32e33_row1_col0" class="data row1 col0">-1.58</td>
-<td id="T_32e33_row1_col1" class="data row1 col1">(0.70)</td>
-<td id="T_32e33_row1_col2" class="data row1 col2">-2.26</td>
+<th id="T_5f445_level0_row1" class="row_heading level0 row1" data-quarto-table-cell-role="th">Intercept</th>
+<td id="T_5f445_row1_col0" class="data row1 col0">-1.58</td>
+<td id="T_5f445_row1_col1" class="data row1 col1">(0.70)</td>
+<td id="T_5f445_row1_col2" class="data row1 col2">-2.26</td>
 </tr>
 <tr class="odd">
-<th id="T_32e33_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">N</th>
-<td id="T_32e33_row2_col0" class="data row2 col0">357</td>
-<td id="T_32e33_row2_col1" class="data row2 col1"></td>
-<td id="T_32e33_row2_col2" class="data row2 col2"></td>
+<th id="T_5f445_level0_row2" class="row_heading level0 row2" data-quarto-table-cell-role="th">N</th>
+<td id="T_5f445_row2_col0" class="data row2 col0">357</td>
+<td id="T_5f445_row2_col1" class="data row2 col1"></td>
+<td id="T_5f445_row2_col2" class="data row2 col2"></td>
 </tr>
 <tr class="even">
-<th id="T_32e33_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">R²</th>
-<td id="T_32e33_row3_col0" class="data row3 col0">0.0183</td>
-<td id="T_32e33_row3_col1" class="data row3 col1"></td>
-<td id="T_32e33_row3_col2" class="data row3 col2"></td>
+<th id="T_5f445_level0_row3" class="row_heading level0 row3" data-quarto-table-cell-role="th">R²</th>
+<td id="T_5f445_row3_col0" class="data row3 col0">0.0183</td>
+<td id="T_5f445_row3_col1" class="data row3 col1"></td>
+<td id="T_5f445_row3_col2" class="data row3 col2"></td>
 </tr>
 </tbody>
 </table>
@@ -696,7 +701,7 @@ Table&nbsp;3: Table 4, Column (i): OLS — Change in FTE Employment on GAP
 <section id="something-additional-visualizing-the-difference-in-differences" class="level2">
 <h2 class="anchored" data-anchor-id="something-additional-visualizing-the-difference-in-differences">Something Additional: Visualizing the Difference-in-Differences</h2>
 <p>The tables above summarize the DiD result with numbers; the figure below makes the logic visual. Each dot shows average FTE employment for a group of stores at each survey wave. The two parallel lines represent the counterfactual: if NJ had followed Pennsylvania’s trajectory, NJ employment would have <em>fallen</em> by 2.16 FTE (the dashed line). Instead, it <em>rose</em> slightly. The gap between the observed NJ outcome and the counterfactual at wave 2 is the DiD estimate of the causal effect.</p>
-<div id="506fa042" class="cell" data-execution_count="5">
+<div id="359dd93f" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Group means using variable-wise available obs (as in SAS PROC MEANS)</span></span>
@@ -772,7 +777,7 @@ Table&nbsp;3: Table 4, Column (i): OLS — Change in FTE Employment on GAP
 <div class="cell-output cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="hw2_questions_files/figure-html/cell-6-output-1.png" width="662" height="468" class="figure-img"></p>
+<p><img src="hw2_questions_files/figure-html/cell-6-output-1.png" width="663" height="470" class="figure-img"></p>
 <figcaption>Difference-in-Differences: FTE Employment Before and After NJ Minimum Wage Increase</figcaption>
 </figure>
 </div>
